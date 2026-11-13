@@ -1,10 +1,10 @@
-Lost in a Good Book 📚
+                                           Lost in a Good Book
 
 Lost in a Good Book est une application web de gestion de bibliothèque développée avec ASP.NET Core MVC et Oracle Database.
 
-Fonctionnalités
+✨ Fonctionnalités
 
-Gestion des utilisateurs : authentification et gestion des rôles (Administrateur, Bibliothécaire, Adhérent).
+Gestion des utilisateurs : authentification et gestion des rôles (Administrateur, Bibliothécaire et Adhérent).
 
 Gestion des livres : ajout, modification, suppression, recherche et consultation.
 
@@ -14,23 +14,39 @@ Gestion des adhérents : consultation et modification des profils.
 
 Statistiques : tableaux de bord et suivi des activités.
 
-BookBot : assistant conversationnel utilisant une IA locale avec Ollama et Qwen 2.5 (3B).
+BookBot : assistant conversationnel basé sur une IA locale avec Ollama et Qwen 2.5 (3B).
 
-Technologies utilisées
+🛠️ Technologies utilisées
 
-C# et ASP.NET Core MVC
+Domaine
+
+Technologies
+
+Backend
+
+C#, ASP.NET Core MVC
+
+Base de données
 
 Oracle Database 11g XE
 
-ADO.NET et Oracle.ManagedDataAccess
+Accès aux données
 
-HTML, CSS, JavaScript et Bootstrap
+ADO.NET, Oracle.ManagedDataAccess
+
+Frontend
+
+HTML, CSS, JavaScript, Bootstrap
+
+Interface
 
 Razor Views
 
-Ollama et Qwen 2.5 (3B)
+Intelligence artificielle
 
-Architecture
+Ollama, Qwen 2.5 (3B)
+
+🏗️ Architecture du projet
 
 Bibliotheque/
 ├── Controllers/
@@ -43,26 +59,33 @@ Bibliotheque/
 ├── appsettings.json
 └── Bibliotheque.csproj
 
-Installation
+⚙️ Installation
 
-Cloner le dépôt :
+1. Cloner le dépôt
 
 git clone https://github.com/ayetnouri/Bibliotheque.git
 
+2. Ouvrir le projet
+
 Ouvrir Bibliotheque.slnx avec Visual Studio.
 
-Configurer la connexion Oracle dans la configuration locale.
+3. Configurer Oracle
 
-Vérifier que la base Oracle est disponible.
+Configurer la chaîne de connexion Oracle dans la configuration locale de l'application et vérifier que la base de données est disponible.
 
-Pour BookBot, installer Ollama et télécharger le modèle :
+4. Configurer BookBot
+
+Installer Ollama et télécharger le modèle :
 
 ollama pull qwen2.5:3b
 
-Lancer le projet depuis Visual Studio.
+5. Lancer l'application
 
-Auteur
+Démarrer le projet depuis Visual Studio.
+
+👩‍💻 Auteur
 
 Ayet Nouri
-Étudiante en 3ème année – Business Information System
+
+Étudiante en business computing  – Business Information System
 École Supérieure de l'Économie Numérique (ESEN)
