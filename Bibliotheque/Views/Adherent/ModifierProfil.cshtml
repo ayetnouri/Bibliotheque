@@ -1,0 +1,119 @@
+﻿@model Bibliotheque.Models.Adherent
+
+@{
+    ViewData["Title"] = "Modifier mon profil";
+}
+
+<div class="edit-profile-page">
+
+    <header class="edit-profile-header">
+        <div class="edit-profile-header-icon">✎</div>
+        <div>
+            <span class="edit-profile-eyebrow">MON ESPACE PERSONNEL</span>
+            <h1>Modifier mon profil</h1>
+            <p>Mettez à jour vos informations personnelles.</p>
+        </div>
+    </header>
+
+    <section class="edit-profile-card">
+
+        <div class="edit-profile-intro">
+            <div class="edit-profile-avatar">♙</div>
+            <div>
+                <h2>Mes informations personnelles</h2>
+                <p>Modifiez les champs souhaités, puis enregistrez vos changements.</p>
+            </div>
+        </div>
+
+        @if (ViewBag.Erreur != null)
+        {
+            <div class="edit-profile-error" role="alert">
+                <span>!</span>
+                <div>@ViewBag.Erreur</div>
+            </div>
+        }
+
+        <form asp-controller="Adherent"
+              asp-action="ModifierProfil"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div class="edit-profile-fields">
+
+                <div class="edit-profile-field">
+                    <label asp-for="Nom">Nom</label>
+                    <input asp-for="Nom"
+                           class="edit-profile-input"
+                           placeholder="Votre nom"
+                           autocomplete="family-name" />
+                    <span asp-validation-for="Nom" class="edit-profile-validation"></span>
+                </div>
+
+                <div class="edit-profile-field">
+                    <label asp-for="Prenom">Prénom</label>
+                    <input asp-for="Prenom"
+                           class="edit-profile-input"
+                           placeholder="Votre prénom"
+                           autocomplete="given-name" />
+                    <span asp-validation-for="Prenom" class="edit-profile-validation"></span>
+                </div>
+
+                <div class="edit-profile-field edit-profile-field-full">
+                    <label asp-for="Email">Adresse e-mail</label>
+                    <input asp-for="Email"
+                           type="email"
+                           class="edit-profile-input"
+                           placeholder="exemple@domaine.com"
+                           autocomplete="email" />
+                    <span asp-validation-for="Email" class="edit-profile-validation"></span>
+                </div>
+
+                <div class="edit-profile-field">
+                    <label asp-for="Telephone">Téléphone</label>
+                    <input asp-for="Telephone"
+                           type="tel"
+                           class="edit-profile-input"
+                           placeholder="Votre numéro de téléphone"
+                           autocomplete="tel" />
+                    <span asp-validation-for="Telephone" class="edit-profile-validation"></span>
+                </div>
+
+                <div class="edit-profile-field edit-profile-field-full">
+                    <label asp-for="Adresse">Adresse</label>
+                    <textarea asp-for="Adresse"
+                              class="edit-profile-input edit-profile-textarea"
+                              rows="3"
+                              placeholder="Votre adresse complète"
+                              autocomplete="street-address"></textarea>
+                    <span asp-validation-for="Adresse" class="edit-profile-validation"></span>
+                </div>
+
+            </div>
+
+            <div class="edit-profile-reminder">
+                <span>✦</span>
+                <p>Vérifiez vos informations avant d'enregistrer les modifications.</p>
+            </div>
+
+            <div class="edit-profile-actions">
+                <button type="submit" class="edit-profile-save">
+                    Enregistrer les modifications
+                    <span>→</span>
+                </button>
+
+                <a asp-controller="Adherent"
+                   asp-action="MonProfil"
+                   class="edit-profile-cancel">
+                    Annuler
+                </a>
+            </div>
+
+        </form>
+    </section>
+
+    <footer class="edit-profile-footer">
+        LOST IN A GOOD BOOK <span>—</span> Votre espace, vos informations.
+    </footer>
+
+</div>

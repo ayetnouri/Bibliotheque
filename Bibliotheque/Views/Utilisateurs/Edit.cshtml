@@ -1,0 +1,187 @@
+﻿@model Bibliotheque.Models.Utilisateur
+
+@{
+    ViewData["Title"] = "Modifier un utilisateur";
+}
+
+<div class="user-edit-page">
+
+    <div class="user-edit-topbar">
+        <a asp-controller="Utilisateurs"
+           asp-action="Index"
+           class="user-edit-back">
+            ← Retour aux utilisateurs
+        </a>
+
+        <span class="user-edit-section-label">
+            ADMINISTRATION · UTILISATEURS
+        </span>
+    </div>
+
+    <section class="user-edit-hero">
+        <div class="user-edit-hero-icon">
+            ✎
+        </div>
+
+        <div>
+            <span class="user-edit-eyebrow">GESTION DES COMPTES</span>
+            <h1>Modifier un utilisateur</h1>
+            <p>
+                Mettez à jour les informations personnelles et les paramètres
+                du compte utilisateur.
+            </p>
+        </div>
+    </section>
+
+    @if (ViewBag.Erreur != null)
+    {
+        <div class="user-edit-alert" role="alert">
+            <span class="user-edit-alert-icon">!</span>
+            <div>
+                <strong>Modification impossible</strong>
+                <p>@ViewBag.Erreur</p>
+            </div>
+        </div>
+    }
+
+    <form asp-controller="Utilisateurs"
+          asp-action="Edit"
+          method="post"
+          class="user-edit-form">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="IdUtilisateur" />
+
+        <div asp-validation-summary="All"
+             class="user-edit-validation"></div>
+
+        <section class="user-edit-card">
+
+            <div class="user-edit-card-heading">
+                <div class="user-edit-heading-icon">01</div>
+                <div>
+                    <h2>Informations personnelles</h2>
+                    <p>Les informations principales de l'utilisateur.</p>
+                </div>
+            </div>
+
+            <div class="user-edit-fields">
+
+                <div class="user-edit-field">
+                    <label asp-for="Nom">Nom</label>
+                    <input asp-for="Nom"
+                           class="user-edit-input"
+                           placeholder="Saisir le nom"
+                           autocomplete="family-name"
+                           required />
+                    <span asp-validation-for="Nom"
+                          class="user-edit-field-error"></span>
+                </div>
+
+                <div class="user-edit-field">
+                    <label asp-for="Prenom">Prénom</label>
+                    <input asp-for="Prenom"
+                           class="user-edit-input"
+                           placeholder="Saisir le prénom"
+                           autocomplete="given-name"
+                           required />
+                    <span asp-validation-for="Prenom"
+                          class="user-edit-field-error"></span>
+                </div>
+
+                <div class="user-edit-field user-edit-field-full">
+                    <label asp-for="Email">Adresse e-mail</label>
+                    <input asp-for="Email"
+                           type="email"
+                           class="user-edit-input"
+                           placeholder="exemple@domaine.com"
+                           autocomplete="email"
+                           required />
+                    <span asp-validation-for="Email"
+                          class="user-edit-field-error"></span>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="user-edit-card">
+
+            <div class="user-edit-card-heading">
+                <div class="user-edit-heading-icon">02</div>
+                <div>
+                    <h2>Paramètres du compte</h2>
+                    <p>Définissez les autorisations et l'état du compte.</p>
+                </div>
+            </div>
+
+            <div class="user-edit-fields">
+
+                <div class="user-edit-field">
+                    <label asp-for="Role">Rôle de l'utilisateur</label>
+
+                    <select asp-for="Role"
+                            class="user-edit-input user-edit-select"
+                            required>
+                        <option value="ADHERENT">Adhérent</option>
+                        <option value="BIBLIOTHECAIRE">Bibliothécaire</option>
+                        <option value="ADMIN">Administrateur</option>
+                    </select>
+
+                    <span asp-validation-for="Role"
+                          class="user-edit-field-error"></span>
+
+                    <small class="user-edit-help">
+                        Le rôle détermine les fonctionnalités accessibles.
+                    </small>
+                </div>
+
+                <div class="user-edit-field">
+                    <label asp-for="Etat">État du compte</label>
+
+                    <select asp-for="Etat"
+                            class="user-edit-input user-edit-select"
+                            required>
+                        <option value="ACTIF">Actif</option>
+                        <option value="INACTIF">Inactif</option>
+                    </select>
+
+                    <span asp-validation-for="Etat"
+                          class="user-edit-field-error"></span>
+
+                    <small class="user-edit-help">
+                        Un compte inactif ne peut pas se connecter.
+                    </small>
+                </div>
+
+            </div>
+
+            <div class="user-edit-info-note">
+                <span class="user-edit-note-icon">i</span>
+                <p>
+                    Vérifiez les informations avant d'enregistrer.
+                    Les modifications seront appliquées au compte utilisateur.
+                </p>
+            </div>
+        </section>
+
+        <div class="user-edit-actions">
+            <a asp-controller="Utilisateurs"
+               asp-action="Index"
+               class="user-edit-cancel">
+                Annuler
+            </a>
+
+            <button type="submit" class="user-edit-submit">
+                <span>✓</span>
+                Enregistrer les modifications
+            </button>
+        </div>
+
+    </form>
+
+    <p class="user-edit-footer">
+        LOST IN A GOOD BOOK · GESTION DES UTILISATEURS
+    </p>
+
+</div>

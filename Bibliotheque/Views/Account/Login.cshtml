@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Connexion";
+}
+
+<div class="login-page login-page-redesigned">
+
+    <div class="login-showcase">
+        <img src="@Url.Content("~/image-login/bibliotheque-login.png")"
+             alt="Intérieur chaleureux d'une bibliothèque"
+             class="login-showcase-image" />
+
+        <div class="login-showcase-overlay"></div>
+
+        <a asp-controller="Livres"
+           asp-action="Index"
+           class="login-showcase-brand">
+            <span class="login-brand-symbol">✧</span>
+            <span>LOST IN A GOOD BOOK</span>
+        </a>
+
+        <div class="login-showcase-quote">
+            <span class="login-quote-line"></span>
+            <p>Un monde de découvertes vous attend.</p>
+            <span class="login-quote-caption">VOTRE BIBLIOTHÈQUE, VOTRE HISTOIRE</span>
+        </div>
+
+        <div class="login-showcase-bottom">
+            <span>Lire · Découvrir · Partager</span>
+        </div>
+    </div>
+
+    <div class="login-panel">
+        <div class="login-panel-inner">
+
+
+            <div class="login-heading">
+                <span class="login-heading-mark">L.</span>
+                <p class="login-subtitle">VOTRE ESPACE PERSONNEL</p>
+                <h1>Heureux de vous retrouver.</h1>
+                <p class="login-description">
+                    Connectez-vous pour découvrir les livres,
+                    gérer vos emprunts et retrouver votre espace.
+                </p>
+            </div>
+
+            <form asp-controller="Account"
+                  asp-action="Login"
+                  method="post"
+                  class="login-form login-form-redesigned">
+
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label for="email">Adresse e-mail</label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           placeholder="exemple@email.com"
+                           autocomplete="email"
+                           required />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="Saisissez votre mot de passe"
+                           autocomplete="current-password"
+                           required />
+                </div>
+
+                <button type="submit" class="login-button login-button-redesigned">
+                    <span>Se connecter</span>
+                    <span aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            <div class="login-footer login-footer-redesigned">
+                <span>Vous nous rejoignez pour la première fois ?</span>
+                <a asp-controller="Account"
+                   asp-action="Register">
+                    Créer un compte
+                </a>
+            </div>
+
+            <div class="login-panel-note">
+                <span></span>
+                UN ESPACE DÉDIÉ À VOTRE PASSION DE LA LECTURE
+                <span></span>
+            </div>
+
+        </div>
+    </div>
+
+</div>

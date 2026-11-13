@@ -1,0 +1,168 @@
+﻿@model List<Bibliotheque.Models.Livre>
+
+@{
+    ViewData["Title"] = "Catalogue";
+}
+
+<div class="catalogue-page">
+
+    <header class="catalogue-header">
+        <div class="catalogue-heading">
+            <p class="catalogue-subtitle">LOST IN A GOOD BOOK</p>
+            <h1>Explorez le catalogue</h1>
+            <p class="catalogue-description">
+                Des histoires à découvrir, des connaissances à explorer.
+                Trouvez le livre qui vous correspond.
+            </p>
+        </div>
+
+        <div class="catalogue-total">
+            <span>NOTRE COLLECTION</span>
+            <strong>@Model.Count</strong>
+            <small>@(Model.Count > 1 ? "ouvrages trouvés" : "ouvrage trouvé")</small>
+        </div>
+    </header>
+
+    <section class="catalogue-search">
+        <form asp-controller="Livres"
+              asp-action="Index"
+              method="get"
+              class="catalogue-search-form">
+
+           
+            <input type="search"
+                   name="recherche"
+                   value="@ViewBag.Recherche"
+                   placeholder="Titre, auteur ou catégorie..."
+                   aria-label="Rechercher un livre" />
+
+            <button type="submit">
+                Rechercher
+            </button>
+        </form>
+        <p class="catalogue-search-hint">
+            Recherchez un ouvrage dans notre collection.
+        </p>
+    </section>
+
+    <section class="catalogue-results">
+        <div class="catalogue-results-heading">
+            <div>
+                <h2>Les ouvrages</h2>
+                <p>Parcourez les livres disponibles dans notre bibliothèque.</p>
+            </div>
+            <span class="catalogue-results-count">
+                @Model.Count résultat(s)
+            </span>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="catalogue-empty">
+                <span>📚</span>
+                <h3>Aucun livre trouvé</h3>
+                <p>Essayez un autre titre ou un autre mot-clé.</p>
+                <a asp-controller="Livres"
+                   asp-action="Index"
+                   class="catalogue-reset">
+                    Voir tout le catalogue
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="books-list">
+                @foreach (var livre in Model)
+                {
+                    var imageLivre = livre.Titre switch
+                    {
+                        "1984" => "1984.jpg",
+                        "Animal Farm" => "Animal Farm.jpg",
+                        "Les Misérables" => "Les Misérables.jpg",
+                        "Introduction à la programmation" => "Introduction à la programmation.jpg",
+                        _ => ""
+                    };
+
+                    <article class="catalogue-book">
+
+                        <div class="catalogue-book-cover">
+                            @if (!string.IsNullOrEmpty(imageLivre))
+                            {
+                                <img src="@Url.Content("~/image/books/" + imageLivre)"
+                                     alt="Couverture de @livre.Titre"
+                                     loading="lazy" />
+                            }
+                            else
+                            {
+                                <span class="book-cover-placeholder">📖</span>
+                            }
+                        </div>
+
+                        <div class="catalogue-book-content">
+                            <div class="catalogue-book-main">
+                                <span class="catalogue-book-label">OUVRAGE</span>
+
+                                <h3>@livre.Titre</h3>
+
+                                <p class="catalogue-book-isbn">
+                                    ISBN : @livre.ISBN
+                                </p>
+
+                                <p class="catalogue-book-summary">
+                                    @(!string.IsNullOrWhiteSpace(livre.Resume)
+                                        ? livre.Resume
+                                        : "Aucun résumé disponible pour cet ouvrage.")
+                                </p>
+
+                                <div class="catalogue-book-meta">
+                                    @if (livre.NombrePages.HasValue)
+                                    {
+                                        <span>
+                                            <strong>@livre.NombrePages</strong> pages
+                                        </span>
+                                    }
+
+                                    @if (livre.AnneePublication.HasValue)
+                                    {
+                                        <span>
+                                            Édition <strong>@livre.AnneePublication</strong>
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="catalogue-book-footer">
+                                <div class="catalogue-stock">
+                                    <span class="catalogue-stock-indicator
+                                        @(livre.ExemplairesDisponibles > 0 ? "in-stock" : "out-of-stock")">
+                                    </span>
+
+                                    <div>
+                                        <strong>
+                                            @(livre.ExemplairesDisponibles > 0
+                                                ? "Disponible"
+                                                : "Indisponible")
+                                        </strong>
+                                        <small>
+                                            @livre.ExemplairesDisponibles sur
+                                            @livre.NombreExemplaires exemplaire(s)
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <a asp-controller="Livres"
+                                   asp-action="Details"
+                                   asp-route-id="@livre.IdLivre"
+                                   class="catalogue-details-button">
+                                    Découvrir le livre
+                                    <span aria-hidden="true">→</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </article>
+                }
+            </div>
+        }
+    </section>
+</div>

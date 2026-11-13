@@ -1,0 +1,171 @@
+﻿@model Bibliotheque.Models.Emprunt
+
+@{
+    ViewData["Title"] = "Enregistrer le retour";
+
+    var statutClass = Model.Statut switch
+    {
+        "EN_COURS" => "loan-return-status-progress",
+        "EN_RETARD" => "loan-return-status-late",
+        _ => "loan-return-status-default"
+    };
+
+    var statutTexte = Model.Statut switch
+    {
+        "EN_COURS" => "En cours",
+        "EN_RETARD" => "En retard",
+        _ => Model.Statut
+    };
+}
+
+<div class="loan-return-page">
+
+    <header class="loan-return-hero">
+        <a asp-controller="Emprunts"
+           asp-action="Index"
+           class="loan-return-back">
+            ← Retour aux emprunts
+        </a>
+
+        <div class="loan-return-hero-content">
+            <div class="loan-return-hero-icon">↩</div>
+
+            <div>
+                <span class="loan-return-eyebrow">GESTION DES EMPRUNTS</span>
+                <h1>Enregistrer le retour</h1>
+                <p>
+                    Vérifiez les informations avant de confirmer le retour du livre.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <main class="loan-return-layout">
+
+        <section class="loan-return-card">
+
+            <div class="loan-return-card-heading">
+                <div>
+                    <span class="loan-return-section-number">01</span>
+                    <h2>Récapitulatif de l'emprunt</h2>
+                </div>
+
+                <span class="loan-return-status @statutClass">
+                    @statutTexte
+                </span>
+            </div>
+
+            <div class="loan-return-book-banner">
+                <div class="loan-return-book-icon">📖</div>
+
+                <div>
+                    <span class="loan-return-label">LIVRE À RETOURNER</span>
+                    <h3>@Model.TitreLivre</h3>
+                    <p>Emprunt numéro #@Model.IdEmprunt</p>
+                </div>
+            </div>
+
+            <div class="loan-return-fields">
+
+                <div class="loan-return-field">
+                    <span class="loan-return-field-icon">♙</span>
+                    <div>
+                        <label>Adhérent</label>
+                        <p>@Model.NomAdherent</p>
+                    </div>
+                </div>
+
+                <div class="loan-return-field">
+                    <span class="loan-return-field-icon">▣</span>
+                    <div>
+                        <label>Date d'emprunt</label>
+                        <p>@Model.DateEmprunt.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+
+                <div class="loan-return-field">
+                    <span class="loan-return-field-icon">◷</span>
+                    <div>
+                        <label>Date de retour prévue</label>
+                        <p>@Model.DateRetourPrevue.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+
+                <div class="loan-return-field">
+                    <span class="loan-return-field-icon">↩</span>
+                    <div>
+                        <label>Retour réel</label>
+                        <p>À enregistrer aujourd'hui</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="loan-return-warning">
+                <span class="loan-return-warning-icon">!</span>
+                <div>
+                    <strong>Confirmation du retour</strong>
+                    <p>
+                        En confirmant, le retour sera enregistré dans le système.
+                        Vérifiez que le livre correspond bien à cet emprunt.
+                    </p>
+                </div>
+            </div>
+
+            <form asp-controller="Emprunts"
+                  asp-action="RetourConfirme"
+                  method="post"
+                  class="loan-return-form">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="id" value="@Model.IdEmprunt" />
+
+                <button type="submit" class="loan-return-confirm-button">
+                    ↩ Confirmer le retour
+                </button>
+
+                <a asp-controller="Emprunts"
+                   asp-action="Index"
+                   class="loan-return-cancel-button">
+                    Annuler
+                </a>
+            </form>
+
+        </section>
+
+        <aside class="loan-return-side-card">
+            <div class="loan-return-side-icon">✓</div>
+
+            <h2>Avant de confirmer</h2>
+
+            <p class="loan-return-side-description">
+                Quelques points à vérifier avant de finaliser cette opération.
+            </p>
+
+            <ul class="loan-return-checklist">
+                <li>
+                    <span>✓</span>
+                    Vérifier le nom de l'adhérent
+                </li>
+                <li>
+                    <span>✓</span>
+                    Vérifier le titre du livre
+                </li>
+                <li>
+                    <span>✓</span>
+                    Vérifier la date de retour prévue
+                </li>
+            </ul>
+
+            <div class="loan-return-side-note">
+                <strong>Information</strong>
+                <p>
+                    Le traitement du retour et la mise à jour du stock doivent
+                    être effectués par le contrôleur après confirmation.
+                </p>
+            </div>
+        </aside>
+
+    </main>
+</div>

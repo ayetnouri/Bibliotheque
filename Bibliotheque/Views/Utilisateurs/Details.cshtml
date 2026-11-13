@@ -1,0 +1,153 @@
+﻿@model Bibliotheque.Models.Utilisateur
+
+@{
+    ViewData["Title"] = "Détails utilisateur";
+}
+
+<div class="user-details-page">
+
+    <!-- EN-TÊTE -->
+    <section class="user-details-hero">
+        <div>
+            <span class="user-details-eyebrow">ESPACE ADMINISTRATEUR</span>
+            <h1>Détails de l'utilisateur</h1>
+            <p>Consultez les informations et le statut de ce compte.</p>
+        </div>
+
+        <div class="user-details-hero-icon" aria-hidden="true">
+            ♙
+        </div>
+    </section>
+
+    <!-- FICHE UTILISATEUR -->
+    <section class="user-details-card">
+
+        <div class="user-details-identity">
+            <div class="user-details-avatar" aria-hidden="true">
+                @if (!string.IsNullOrWhiteSpace(Model.Prenom))
+                {
+                    @Model.Prenom.Substring(0, 1).ToUpper()
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Nom))
+                {
+                    @Model.Nom.Substring(0, 1).ToUpper()
+                }
+            </div>
+
+            <div class="user-details-name">
+                <span class="user-details-label">PROFIL UTILISATEUR</span>
+                <h2>@Model.Prenom @Model.Nom</h2>
+                <p>@Model.Email</p>
+            </div>
+
+            <span class="user-details-status @(Model.Etat == "ACTIF" ? "is-active" : "is-inactive")">
+                <span class="user-details-status-dot"></span>
+                @Model.Etat
+            </span>
+        </div>
+
+        <div class="user-details-divider"></div>
+
+        <div class="user-details-section-heading">
+            <h3>Informations du compte</h3>
+            <p>Informations enregistrées dans la bibliothèque.</p>
+        </div>
+
+        <div class="user-details-grid">
+
+            <div class="user-details-field">
+                <span class="user-details-field-icon">♙</span>
+                <div>
+                    <span class="user-details-field-label">Prénom</span>
+                    <p>@Model.Prenom</p>
+                </div>
+            </div>
+
+            <div class="user-details-field">
+                <span class="user-details-field-icon">♙</span>
+                <div>
+                    <span class="user-details-field-label">Nom</span>
+                    <p>@Model.Nom</p>
+                </div>
+            </div>
+
+            <div class="user-details-field">
+                <span class="user-details-field-icon">✉</span>
+                <div>
+                    <span class="user-details-field-label">Adresse email</span>
+                    <p>@Model.Email</p>
+                </div>
+            </div>
+
+            <div class="user-details-field">
+                <span class="user-details-field-icon">⌑</span>
+                <div>
+                    <span class="user-details-field-label">Rôle</span>
+                    <p>
+                        <span class="user-details-role">@Model.Role</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="user-details-field">
+                <span class="user-details-field-icon">◷</span>
+                <div>
+                    <span class="user-details-field-label">Date de création</span>
+                    <p>
+                        @if (Model.DateCreation.HasValue)
+                        {
+                            @Model.DateCreation.Value.ToString("dd/MM/yyyy")
+                        }
+                        else
+                        {
+                            <span class="user-details-muted">Non renseignée</span>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <div class="user-details-field">
+                <span class="user-details-field-icon">✓</span>
+                <div>
+                    <span class="user-details-field-label">État du compte</span>
+                    <p>
+                        <span class="user-details-status-text @(Model.Etat == "ACTIF" ? "is-active" : "is-inactive")">
+                            @Model.Etat
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="user-details-note">
+            <span class="user-details-note-icon">i</span>
+            <p>
+                Ces informations permettent à l'administrateur de vérifier
+                l'identité, le rôle et l'état du compte sélectionné.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- ACTIONS -->
+    <div class="user-details-actions">
+
+        <a asp-controller="Utilisateurs"
+           asp-action="Edit"
+           asp-route-id="@Model.IdUtilisateur"
+           class="user-details-btn user-details-btn-primary">
+            <span aria-hidden="true">✎</span>
+            Modifier cet utilisateur
+        </a>
+
+        <a asp-controller="Utilisateurs"
+           asp-action="Index"
+           class="user-details-btn user-details-btn-secondary">
+            <span aria-hidden="true">←</span>
+            Retour à la liste
+        </a>
+
+    </div>
+
+</div>

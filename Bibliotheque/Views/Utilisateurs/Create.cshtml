@@ -1,0 +1,204 @@
+﻿@model Bibliotheque.Models.Utilisateur
+
+@{
+    ViewData["Title"] = "Ajouter un utilisateur";
+}
+
+<div class="user-create-page">
+
+    <div class="user-create-topbar">
+        <a asp-controller="Utilisateurs"
+           asp-action="Index"
+           class="user-create-back">
+            ← Retour aux utilisateurs
+        </a>
+
+        <span class="user-create-section-label">
+            ADMINISTRATION · UTILISATEURS
+        </span>
+    </div>
+
+    <section class="user-create-hero">
+        <div class="user-create-hero-icon">＋</div>
+
+        <div>
+            <span class="user-create-eyebrow">GESTION DES COMPTES</span>
+            <h1>Ajouter un utilisateur</h1>
+            <p>
+                Créez un nouveau compte et définissez ses informations,
+                son rôle et son accès à la bibliothèque.
+            </p>
+        </div>
+    </section>
+
+    @if (ViewBag.Erreur != null)
+    {
+        <div class="user-create-alert" role="alert">
+            <span class="user-create-alert-icon">!</span>
+            <div>
+                <strong>Création impossible</strong>
+                <p>@ViewBag.Erreur</p>
+            </div>
+        </div>
+    }
+
+    <form asp-controller="Utilisateurs"
+          asp-action="Create"
+          method="post"
+          class="user-create-form">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="All"
+             class="user-create-validation"></div>
+
+        <section class="user-create-card">
+
+            <div class="user-create-card-heading">
+                <div class="user-create-number">01</div>
+                <div>
+                    <h2>Informations personnelles</h2>
+                    <p>Renseignez les coordonnées du nouvel utilisateur.</p>
+                </div>
+            </div>
+
+            <div class="user-create-fields">
+
+                <div class="user-create-field">
+                    <label asp-for="Nom">Nom</label>
+                    <input asp-for="Nom"
+                           class="user-create-input"
+                           placeholder="Nom de famille"
+                           autocomplete="family-name"
+                           required />
+                    <span asp-validation-for="Nom"
+                          class="user-create-field-error"></span>
+                </div>
+
+                <div class="user-create-field">
+                    <label asp-for="Prenom">Prénom</label>
+                    <input asp-for="Prenom"
+                           class="user-create-input"
+                           placeholder="Prénom"
+                           autocomplete="given-name"
+                           required />
+                    <span asp-validation-for="Prenom"
+                          class="user-create-field-error"></span>
+                </div>
+
+                <div class="user-create-field user-create-field-full">
+                    <label asp-for="Email">Adresse e-mail</label>
+                    <input asp-for="Email"
+                           type="email"
+                           class="user-create-input"
+                           placeholder="exemple@domaine.com"
+                           autocomplete="email"
+                           required />
+                    <span asp-validation-for="Email"
+                          class="user-create-field-error"></span>
+                    <small class="user-create-help">
+                        Utilisez une adresse e-mail valide pour identifier le compte.
+                    </small>
+                </div>
+
+                <div class="user-create-field user-create-field-full">
+                    <label for="motDePasse">Mot de passe</label>
+
+                    <input type="password"
+                           id="motDePasse"
+                           name="motDePasse"
+                           class="user-create-input"
+                           placeholder="Créer un mot de passe"
+                           autocomplete="new-password"
+                           required />
+
+                    <small class="user-create-help">
+                        Choisissez un mot de passe suffisamment robuste.
+                    </small>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="user-create-card">
+
+            <div class="user-create-card-heading">
+                <div class="user-create-number">02</div>
+                <div>
+                    <h2>Configuration du compte</h2>
+                    <p>Définissez les autorisations et l'état initial.</p>
+                </div>
+            </div>
+
+            <div class="user-create-fields">
+
+                <div class="user-create-field">
+                    <label asp-for="Role">Rôle de l'utilisateur</label>
+
+                    <select asp-for="Role"
+                            class="user-create-input user-create-select"
+                            required>
+                        <option value="">-- Sélectionner un rôle --</option>
+                        <option value="ADHERENT">Adhérent</option>
+                        <option value="BIBLIOTHECAIRE">Bibliothécaire</option>
+                        <option value="ADMIN">Administrateur</option>
+                    </select>
+
+                    <span asp-validation-for="Role"
+                          class="user-create-field-error"></span>
+
+                    <small class="user-create-help">
+                        Le rôle détermine les fonctionnalités accessibles.
+                    </small>
+                </div>
+
+                <div class="user-create-field">
+                    <label asp-for="Etat">État du compte</label>
+
+                    <select asp-for="Etat"
+                            class="user-create-input user-create-select"
+                            required>
+                        <option value="ACTIF">Actif</option>
+                        <option value="INACTIF">Inactif</option>
+                    </select>
+
+                    <span asp-validation-for="Etat"
+                          class="user-create-field-error"></span>
+
+                    <small class="user-create-help">
+                        Un compte inactif ne pourra pas se connecter.
+                    </small>
+                </div>
+
+            </div>
+
+            <div class="user-create-info-note">
+                <span class="user-create-note-icon">i</span>
+                <p>
+                    Vérifiez les informations avant de créer le compte.
+                    Si le rôle sélectionné est « Adhérent », le système doit
+                    également créer son enregistrement dans la table ADHERENT.
+                </p>
+            </div>
+        </section>
+
+        <div class="user-create-actions">
+            <a asp-controller="Utilisateurs"
+               asp-action="Index"
+               class="user-create-cancel">
+                Annuler
+            </a>
+
+            <button type="submit" class="user-create-submit">
+                <span>＋</span>
+                Créer le compte
+            </button>
+        </div>
+
+    </form>
+
+    <p class="user-create-footer">
+        LOST IN A GOOD BOOK · GESTION DES UTILISATEURS
+    </p>
+
+</div>

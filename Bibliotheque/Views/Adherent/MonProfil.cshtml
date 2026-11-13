@@ -1,0 +1,160 @@
+﻿@model Bibliotheque.Models.Adherent
+
+@{
+    ViewData["Title"] = "Mon profil";
+}
+
+<div class="my-profile-page">
+
+    <header class="profile-hero">
+        <div class="profile-hero-content">
+            <span class="profile-eyebrow">MON ESPACE PERSONNEL</span>
+            <h1>Mon profil</h1>
+            <p>Votre espace personnel, vos informations en un seul endroit.</p>
+        </div>
+
+        <div class="profile-hero-decoration">
+            <span class="profile-decoration-circle"></span>
+            <span class="profile-decoration-book">✦</span>
+        </div>
+    </header>
+
+    <section class="profile-main-card">
+
+        <div class="profile-identity">
+            <div class="profile-avatar">
+                @((Model.Prenom ?? "A").Substring(0, 1).ToUpper())
+                @((Model.Nom ?? " ").Substring(0, 1).ToUpper())
+            </div>
+
+            <div class="profile-identity-info">
+                <span class="profile-section-label">VOTRE IDENTITÉ</span>
+                <h2>@Model.Prenom @Model.Nom</h2>
+                <p class="profile-email">
+                    <span class="profile-email-icon">✉</span>
+                    @Model.Email
+                </p>
+            </div>
+
+            <div class="profile-account-badge">
+                <span class="profile-status-dot"></span>
+                @(string.IsNullOrWhiteSpace(Model.Etat) ? "État inconnu" : Model.Etat)
+            </div>
+        </div>
+
+        <div class="profile-divider"></div>
+
+        <div class="profile-details-heading">
+            <span class="profile-heading-icon">▤</span>
+            <div>
+                <h3>Mes informations</h3>
+                <p>Les informations associées à votre compte adhérent.</p>
+            </div>
+        </div>
+
+        <div class="profile-info-grid">
+
+            <div class="profile-info-item profile-info-blue">
+                <div class="profile-info-icon">✉</div>
+                <div class="profile-info-content">
+                    <span>Adresse e-mail</span>
+                    <strong class="profile-value">@Model.Email</strong>
+                </div>
+            </div>
+
+            <div class="profile-info-item profile-info-purple">
+                <div class="profile-info-icon">☎</div>
+                <div class="profile-info-content">
+                    <span>Téléphone</span>
+                    <strong class="profile-value">
+                        @(string.IsNullOrWhiteSpace(Model.Telephone)
+                            ? "Non renseigné"
+                            : Model.Telephone)
+                    </strong>
+                </div>
+            </div>
+
+            <div class="profile-info-item profile-info-orange">
+                <div class="profile-info-icon">⌖</div>
+                <div class="profile-info-content">
+                    <span>Adresse</span>
+                    <strong class="profile-value">
+                        @(string.IsNullOrWhiteSpace(Model.Adresse)
+                            ? "Non renseignée"
+                            : Model.Adresse)
+                    </strong>
+                </div>
+            </div>
+
+            <div class="profile-info-item profile-info-green">
+                <div class="profile-info-icon">✓</div>
+                <div class="profile-info-content">
+                    <span>Statut adhérent</span>
+                    <strong class="profile-value">
+                        @(string.IsNullOrWhiteSpace(Model.Statut)
+                            ? "Non renseigné"
+                            : Model.Statut)
+                    </strong>
+                </div>
+            </div>
+
+            <div class="profile-info-item profile-info-pink">
+                <div class="profile-info-icon">▦</div>
+                <div class="profile-info-content">
+                    <span>Date d'inscription</span>
+                    <strong class="profile-value">
+                        @(Model.DateInscription.HasValue
+                            ? Model.DateInscription.Value.ToString("dd/MM/yyyy")
+                            : "Non renseignée")
+                    </strong>
+                </div>
+            </div>
+
+            <div class="profile-info-item profile-info-gold">
+                <div class="profile-info-icon">◷</div>
+                <div class="profile-info-content">
+                    <span>Création du compte</span>
+                    <strong class="profile-value">
+                        @(Model.DateCreation.HasValue
+                            ? Model.DateCreation.Value.ToString("dd/MM/yyyy")
+                            : "Non renseignée")
+                    </strong>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="profile-note">
+            <span class="profile-note-icon">✦</span>
+            <p>
+                Gardez vos informations à jour pour faciliter la gestion
+                de vos emprunts et le suivi de votre compte.
+            </p>
+        </div>
+
+    </section>
+
+    <div class="profile-actions">
+        <a asp-controller="Adherent"
+           asp-action="ModifierProfil"
+           class="profile-button profile-button-primary">
+            <span>✎</span>
+            Modifier mon profil
+            <span class="profile-button-arrow">→</span>
+        </a>
+
+        <a asp-controller="Adherent"
+           asp-action="Index"
+           class="profile-button profile-button-secondary">
+            ← Retour à mon espace
+        </a>
+    </div>
+
+    <footer class="profile-footer">
+        <span class="profile-footer-star">✦</span>
+        LOST IN A GOOD BOOK
+        <span class="profile-footer-line"></span>
+        Votre histoire continue ici.
+    </footer>
+
+</div>

@@ -1,0 +1,323 @@
+﻿@{
+    ViewData["Title"] = "Accueil";
+}
+
+<!-- HERO -->
+<section class="home-hero">
+    <div class="home-hero-overlay"></div>
+
+    <div class="home-hero-content">
+        <span class="home-eyebrow">
+            <span class="home-eyebrow-dot"></span>
+            BIENVENUE CHEZ LOST IN A GOOD BOOK
+        </span>
+
+        <h1>
+            Et si votre prochaine
+            <span>histoire commençait ici ?</span>
+        </h1>
+
+        <p>
+            Entrez dans un univers où les histoires prennent vie,
+            où les idées voyagent et où chaque livre vous invite
+            à découvrir quelque chose de nouveau.
+        </p>
+
+        <div class="home-hero-buttons">
+            <a asp-controller="Livres"
+               asp-action="Index"
+               class="home-btn home-btn-primary">
+                Explorer le catalogue
+                <span aria-hidden="true">↗</span>
+            </a>
+
+            <a href="#services" class="home-btn home-btn-glass">
+                Découvrir la bibliothèque
+                <span aria-hidden="true">↓</span>
+            </a>
+        </div>
+
+        <div class="home-hero-note">
+            <span class="home-note-line"></span>
+            <span>Un lieu pour lire, rêver et grandir.</span>
+        </div>
+    </div>
+
+    <div class="home-hero-side" aria-hidden="true">
+        <span class="home-side-number">01</span>
+        <span class="home-side-line"></span>
+        <span class="home-side-text">L'ART DE LA LECTURE</span>
+    </div>
+
+    <a href="#introduction" class="home-scroll" aria-label="Découvrir la suite">
+        <span>FAITES DÉFILER</span>
+        <span class="home-scroll-circle">↓</span>
+    </a>
+</section>
+
+<!-- INTRODUCTION -->
+<section class="home-intro" id="introduction">
+    <div class="home-intro-layout">
+
+        <div class="home-intro-heading">
+            <span class="home-section-label">
+                <span></span> NOTRE UNIVERS
+            </span>
+
+            <h2>
+                Bien plus que des livres,
+                <em>des mondes à découvrir.</em>
+            </h2>
+
+            <div class="home-intro-stamp" aria-hidden="true">
+                <span>LECTURE</span>
+                <strong>✳</strong>
+                <span>ÉVASION</span>
+            </div>
+        </div>
+
+        <div class="home-intro-copy">
+            <p>
+                Certaines histoires nous font voyager. D'autres nous
+                apprennent à voir le monde autrement. Et parfois,
+                quelques pages suffisent pour trouver une nouvelle inspiration.
+            </p>
+
+            <p>
+                Notre bibliothèque vous accompagne dans vos découvertes
+                grâce à un catalogue accessible, une recherche pratique
+                et un espace pensé pour faciliter vos lectures.
+            </p>
+
+            <a asp-controller="Livres"
+               asp-action="Index"
+               class="home-text-link">
+                Découvrir notre collection
+                <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="home-quote">
+        <span class="home-quote-mark" aria-hidden="true">“</span>
+
+        <div class="home-quote-content">
+            <p>
+                Un livre, mille émotions, des possibilités infinies.
+            </p>
+            <span>VOTRE PROCHAINE HISTOIRE VOUS ATTEND</span>
+        </div>
+
+        <span class="home-quote-star" aria-hidden="true">✳</span>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="home-services" id="services">
+    <div class="home-section-heading">
+        <div>
+            <span class="home-section-label">
+                <span></span> UNE EXPÉRIENCE POUR VOUS
+            </span>
+
+            <h2>
+                Votre prochaine lecture,
+                <em>en quelques instants.</em>
+            </h2>
+        </div>
+
+        <p>
+            Tout est pensé pour rendre votre découverte
+            des livres plus simple et plus agréable.
+        </p>
+    </div>
+
+    <div class="home-services-grid">
+
+        <!-- CATALOGUE -->
+        <article class="home-service-card">
+            <div class="home-service-top">
+                <span class="home-service-number">01 / DÉCOUVRIR</span>
+                <span class="home-service-icon" aria-hidden="true">▤</span>
+            </div>
+
+            <div class="home-service-illustration home-illustration-books"
+                 aria-hidden="true">
+                <span class="home-book-shape book-shape-one"></span>
+                <span class="home-book-shape book-shape-two"></span>
+                <span class="home-book-shape book-shape-three"></span>
+            </div>
+
+            <h3>Le catalogue</h3>
+
+            <p>
+                Explorez les ouvrages de notre bibliothèque
+                et laissez-vous guider vers votre prochaine lecture.
+            </p>
+
+            <a asp-controller="Livres" asp-action="Index">
+                Explorer les livres <span aria-hidden="true">↗</span>
+            </a>
+        </article>
+
+        <!-- RECHERCHE -->
+        <article class="home-service-card home-service-highlight">
+            <div class="home-service-top">
+                <span class="home-service-number">02 / TROUVER</span>
+                <span class="home-service-icon" aria-hidden="true">⌕</span>
+            </div>
+
+            <div class="home-service-illustration home-illustration-search"
+                 aria-hidden="true">
+                <span class="home-search-circle"></span>
+                <span class="home-search-handle"></span>
+                <span class="home-search-spark">✳</span>
+            </div>
+
+            <h3>La recherche</h3>
+
+            <p>
+                Retrouvez plus facilement un ouvrage grâce
+                à la recherche par titre, auteur ou catégorie.
+            </p>
+
+            <a asp-controller="Livres" asp-action="Index">
+                Trouver un livre <span aria-hidden="true">↗</span>
+            </a>
+        </article>
+
+        <!-- ESPACE MEMBRE -->
+        <article class="home-service-card">
+            <div class="home-service-top">
+                <span class="home-service-number">03 / VOUS CONNECTER</span>
+                <span class="home-service-icon" aria-hidden="true">♙</span>
+            </div>
+
+            <div class="home-service-illustration home-illustration-member"
+                 aria-hidden="true">
+                <span class="home-member-orbit"></span>
+                <span class="home-member-person">♙</span>
+                <span class="home-member-star">✦</span>
+            </div>
+
+            <h3>Votre espace membre</h3>
+
+            <p>
+                Connectez-vous pour retrouver votre espace personnel
+                et accéder aux fonctionnalités associées à votre compte.
+            </p>
+
+            <a asp-controller="Account" asp-action="Login">
+                Accéder à mon espace <span aria-hidden="true">↗</span>
+            </a>
+        </article>
+
+    </div>
+</section>
+
+<!-- STATISTIQUES -->
+<section class="home-stats">
+    <div class="home-stats-heading">
+        <span class="home-section-label home-section-label-light">
+            <span></span> LA LECTURE NOUS RASSEMBLE
+        </span>
+
+        <h2>
+            Un univers de découvertes,
+            <em>à portée de main.</em>
+        </h2>
+    </div>
+
+    <div class="home-stats-grid">
+        <div class="home-stat-item">
+            <span class="home-stat-icon" aria-hidden="true">▤</span>
+            <strong>100<span>+</span></strong>
+            <p>Livres dans notre univers</p>
+        </div>
+
+        <div class="home-stat-item">
+            <span class="home-stat-icon" aria-hidden="true">✳</span>
+            <strong>50<span>+</span></strong>
+            <p>Auteurs à découvrir</p>
+        </div>
+
+        <div class="home-stat-item">
+            <span class="home-stat-icon" aria-hidden="true">⌘</span>
+            <strong>20<span>+</span></strong>
+            <p>Catégories à explorer</p>
+        </div>
+
+        <div class="home-stat-item">
+            <span class="home-stat-icon" aria-hidden="true">◷</span>
+            <strong>24<span>/7</span></strong>
+            <p>Accès à la plateforme</p>
+        </div>
+    </div>
+
+    <p class="home-stats-note">
+        Des chiffres illustratifs à remplacer par les données réelles de votre base.
+    </p>
+</section>
+
+<!-- ESPACE MEMBRE -->
+<section class="home-member">
+    <div class="home-member-panel">
+        <div class="home-member-decoration" aria-hidden="true">
+            <span class="home-member-decoration-circle"></span>
+            <span class="home-member-decoration-star">✳</span>
+            <span class="home-member-decoration-book">BOOKS<br />& STORIES</span>
+        </div>
+
+        <div class="home-member-content">
+            <span class="home-section-label">
+                <span></span> VOTRE ESPACE PERSONNEL
+            </span>
+
+            <h2>
+                Faites de la lecture
+                <em>votre prochain rendez-vous.</em>
+            </h2>
+
+            <p>
+                Retrouvez votre espace personnel et profitez
+                des fonctionnalités proposées par votre bibliothèque.
+            </p>
+
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="home-btn home-btn-primary">
+                Se connecter
+                <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="home-final-cta">
+    <div class="home-final-decoration" aria-hidden="true">✳</div>
+
+    <span class="home-section-label">
+        <span></span> LA SUITE S'ÉCRIT AVEC VOUS
+    </span>
+
+    <h2>
+        Il y a toujours
+        <em>un livre fait pour vous.</em>
+    </h2>
+
+    <p>
+        Ouvrez la porte à une nouvelle histoire.
+        Votre prochaine découverte est peut-être tout près.
+    </p>
+
+    <a asp-controller="Livres"
+       asp-action="Index"
+       class="home-btn home-btn-primary">
+        Trouver mon prochain livre
+        <span aria-hidden="true">↗</span>
+    </a>
+
+    <span class="home-final-signature">LOST IN A GOOD BOOK · DEPUIS VOTRE BIBLIOTHÈQUE</span>
+</section>

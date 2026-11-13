@@ -1,0 +1,101 @@
+﻿@model Bibliotheque.Models.Livre
+
+@{
+    ViewData["Title"] = "Supprimer un livre";
+}
+
+<div class="book-delete-page">
+
+    <div class="book-delete-hero">
+        <div class="book-delete-icon">!</div>
+        <div>
+            <span class="book-delete-eyebrow">GESTION DU CATALOGUE</span>
+            <h1>Supprimer un livre</h1>
+            <p>Vérifiez les informations avant de confirmer cette action.</p>
+        </div>
+    </div>
+
+    <div class="book-delete-card">
+
+        <div class="book-delete-warning">
+            <span class="book-delete-warning-icon">!</span>
+            <div>
+                <h2>Confirmer la suppression ?</h2>
+                <p>
+                    Cette action peut être définitive.
+                    Vérifiez que vous avez sélectionné le bon ouvrage avant de continuer.
+                </p>
+            </div>
+        </div>
+
+        <div class="book-delete-content">
+
+            <div class="book-delete-cover">
+                <span class="book-delete-cover-symbol">▤</span>
+                <span class="book-delete-cover-label">COLLECTION</span>
+            </div>
+
+            <div class="book-delete-details">
+                <span class="book-delete-category">OUVRAGE SÉLECTIONNÉ</span>
+
+                <h2>@Model.Titre</h2>
+
+                <div class="book-delete-isbn">
+                    <span>ISBN</span>
+                    <strong>@(string.IsNullOrWhiteSpace(Model.ISBN) ? "Non renseigné" : Model.ISBN)</strong>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Resume))
+                {
+                    <p class="book-delete-summary">@Model.Resume</p>
+                }
+
+                <div class="book-delete-meta">
+                    <div>
+                        <span>Nombre de pages</span>
+                        <strong>@(Model.NombrePages?.ToString() ?? "N/A")</strong>
+                    </div>
+
+                    <div>
+                        <span>Année de publication</span>
+                        <strong>@(Model.AnneePublication?.ToString() ?? "N/A")</strong>
+                    </div>
+
+                    <div>
+                        <span>Exemplaires</span>
+                        <strong>@(Model.NombreExemplaires?.ToString() ?? "N/A")</strong>
+                    </div>
+
+                    <div>
+                        <span>Disponibles</span>
+                        <strong>@(Model.ExemplairesDisponibles?.ToString() ?? "N/A")</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="book-delete-footer">
+            <a asp-controller="Livres"
+               asp-action="Gestion"
+               class="book-delete-cancel">
+                Annuler
+            </a>
+
+            <form asp-controller="Livres"
+                  asp-action="DeleteConfirmed"
+                  method="post"
+                  onsubmit="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="IdLivre" />
+
+                <button type="submit" class="book-delete-submit">
+                    <span>×</span> Confirmer la suppression
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>

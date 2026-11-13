@@ -1,0 +1,207 @@
+﻿@model Bibliotheque.Models.Livre
+
+@{
+    ViewData["Title"] = "Modifier un livre";
+}
+
+<div class="book-edit-page">
+
+    <div class="book-edit-hero">
+        <div class="book-edit-icon">✎</div>
+        <div>
+            <span class="book-edit-eyebrow">GESTION DU CATALOGUE</span>
+            <h1>Modifier un livre</h1>
+            <p>Mettez à jour les informations de cet ouvrage.</p>
+        </div>
+    </div>
+
+    <form asp-controller="Livres"
+          asp-action="Edit"
+          method="post"
+          class="book-edit-form">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="IdLivre" />
+
+        <div asp-validation-summary="All"
+             class="book-edit-validation"></div>
+
+        <section class="book-edit-card">
+            <div class="book-edit-section-title">
+                <span class="book-edit-number">01</span>
+                <div>
+                    <h2>Informations du livre</h2>
+                    <p>Modifiez le titre, l'ISBN et les caractéristiques de l'ouvrage.</p>
+                </div>
+            </div>
+
+            <div class="book-edit-grid">
+
+                <div class="book-edit-field">
+                    <label asp-for="Titre">Titre du livre</label>
+                    <input asp-for="Titre"
+                           class="form-control"
+                           placeholder="Titre du livre" />
+                    <span asp-validation-for="Titre"></span>
+                </div>
+
+                <div class="book-edit-field">
+                    <label asp-for="ISBN">ISBN</label>
+                    <input asp-for="ISBN"
+                           class="form-control"
+                           placeholder="Numéro ISBN" />
+                    <span asp-validation-for="ISBN"></span>
+                </div>
+
+                <div class="book-edit-field book-edit-full">
+                    <label asp-for="Resume">Résumé</label>
+                    <textarea asp-for="Resume"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Résumé du livre..."></textarea>
+                    <span asp-validation-for="Resume"></span>
+                </div>
+
+                <div class="book-edit-field">
+                    <label asp-for="NombrePages">Nombre de pages</label>
+                    <input asp-for="NombrePages"
+                           type="number"
+                           min="1"
+                           class="form-control" />
+                    <span asp-validation-for="NombrePages"></span>
+                </div>
+
+                <div class="book-edit-field">
+                    <label asp-for="AnneePublication">Année de publication</label>
+                    <input asp-for="AnneePublication"
+                           type="number"
+                           min="1"
+                           class="form-control" />
+                    <span asp-validation-for="AnneePublication"></span>
+                </div>
+
+                <div class="book-edit-field book-edit-full">
+                    <label asp-for="Emplacement">Emplacement en bibliothèque</label>
+                    <input asp-for="Emplacement"
+                           class="form-control"
+                           placeholder="Ex. : Rayon A - Étagère 2" />
+                    <span asp-validation-for="Emplacement"></span>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="book-edit-card">
+            <div class="book-edit-section-title">
+                <span class="book-edit-number">02</span>
+                <div>
+                    <h2>Classement du livre</h2>
+                    <p>Choisissez la catégorie, la langue et l'éditeur.</p>
+                </div>
+            </div>
+
+            <div class="book-edit-grid">
+
+                <div class="book-edit-field">
+                    <label asp-for="IdCategorie">Catégorie</label>
+                    <select asp-for="IdCategorie" class="form-control">
+                        <option value="">-- Choisir une catégorie --</option>
+                        @foreach (var categorie in ViewBag.Categories)
+                        {
+                            <option value="@categorie.IdCategorie">
+                                @categorie.Nom
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdCategorie"></span>
+                </div>
+
+                <div class="book-edit-field">
+                    <label asp-for="IdLangue">Langue</label>
+                    <select asp-for="IdLangue" class="form-control">
+                        <option value="">-- Choisir une langue --</option>
+                        @foreach (var langue in ViewBag.Langues)
+                        {
+                            <option value="@langue.IdLangue">
+                                @langue.Nom
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdLangue"></span>
+                </div>
+
+                <div class="book-edit-field book-edit-full">
+                    <label asp-for="IdEditeur">Éditeur</label>
+                    <select asp-for="IdEditeur" class="form-control">
+                        <option value="">-- Choisir un éditeur --</option>
+                        @foreach (var editeur in ViewBag.Editeurs)
+                        {
+                            <option value="@editeur.IdEditeur">
+                                @editeur.Nom
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdEditeur"></span>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="book-edit-card">
+            <div class="book-edit-section-title">
+                <span class="book-edit-number">03</span>
+                <div>
+                    <h2>Gestion du stock</h2>
+                    <p>Actualisez les quantités d'exemplaires.</p>
+                </div>
+            </div>
+
+            <div class="book-edit-grid">
+
+                <div class="book-edit-field">
+                    <label asp-for="NombreExemplaires">Nombre total d'exemplaires</label>
+                    <input asp-for="NombreExemplaires"
+                           type="number"
+                           min="0"
+                           class="form-control" />
+                    <span asp-validation-for="NombreExemplaires"></span>
+                </div>
+
+                <div class="book-edit-field">
+                    <label asp-for="ExemplairesDisponibles">Exemplaires disponibles</label>
+                    <input asp-for="ExemplairesDisponibles"
+                           type="number"
+                           min="0"
+                           class="form-control" />
+                    <span asp-validation-for="ExemplairesDisponibles"></span>
+                </div>
+
+            </div>
+
+            <div class="book-edit-stock-note">
+                <span>ⓘ</span>
+                Le nombre d'exemplaires disponibles ne doit pas dépasser le stock total.
+            </div>
+        </section>
+
+        <div class="book-edit-actions">
+            <a asp-controller="Livres"
+               asp-action="Gestion"
+               class="book-edit-cancel">
+                Annuler
+            </a>
+
+            <button type="submit" class="book-edit-submit">
+                <span>✓</span> Enregistrer les modifications
+            </button>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

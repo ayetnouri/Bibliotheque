@@ -1,0 +1,310 @@
+﻿@model List<Bibliotheque.Models.Livre>
+
+@{
+    ViewData["Title"] = "Gestion des livres";
+}
+
+<div class="book-management-page">
+
+    <div class="book-management-topbar">
+        <a asp-controller="Dashboard"
+           asp-action="Index"
+           class="book-management-back">
+            ← Tableau de bord
+        </a>
+
+        <span class="book-management-label">
+            ADMINISTRATION · CATALOGUE
+        </span>
+    </div>
+
+    <section class="book-management-hero">
+        <div class="book-management-hero-icon">▤</div>
+
+        <div class="book-management-hero-content">
+            <span class="book-management-eyebrow">ESPACE BIBLIOTHÉCAIRE</span>
+            <h1>Gestion des livres</h1>
+            <p>
+                Organisez votre catalogue, consultez les ouvrages
+                et gérez les exemplaires de votre bibliothèque.
+            </p>
+        </div>
+
+        <div class="book-management-hero-decoration" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </section>
+
+    @if (TempData["Succes"] != null)
+    {
+        <div class="book-management-alert book-management-alert-success"
+             role="status">
+            <span class="book-management-alert-icon">✓</span>
+            <span>@TempData["Succes"]</span>
+        </div>
+    }
+
+    @if (TempData["Erreur"] != null)
+    {
+        <div class="book-management-alert book-management-alert-error"
+             role="alert">
+            <span class="book-management-alert-icon">!</span>
+            <span>@TempData["Erreur"]</span>
+        </div>
+    }
+
+    <section class="book-management-toolbar">
+
+        <div class="book-management-toolbar-heading">
+            <span class="book-management-small-label">VOTRE COLLECTION</span>
+            <h2>Catalogue de la bibliothèque</h2>
+            <p>Recherchez et gérez les ouvrages enregistrés.</p>
+        </div>
+
+        <a asp-controller="Livres"
+           asp-action="Create"
+           class="book-management-add">
+            <span>＋</span>
+            Ajouter un livre
+        </a>
+
+    </section>
+
+    <form asp-controller="Livres"
+          asp-action="Gestion"
+          method="get"
+          class="book-management-search">
+
+        <span class="book-management-search-icon" aria-hidden="true">⌕</span>
+
+        <input type="text"
+               name="recherche"
+               value="@ViewBag.Recherche"
+               placeholder="Titre, auteur ou catégorie..."
+               aria-label="Rechercher un livre" />
+
+        @if (!string.IsNullOrWhiteSpace((string?)ViewBag.Recherche))
+        {
+            <a asp-controller="Livres"
+               asp-action="Gestion"
+               class="book-management-clear">
+                Effacer
+            </a>
+        }
+
+        <button type="submit" class="book-management-search-button">
+            Rechercher
+        </button>
+
+    </form>
+
+    <div class="book-management-results">
+        <span>
+            <strong>@(Model?.Count ?? 0)</strong>
+            livre(s) affiché(s)
+        </span>
+
+        @if (!string.IsNullOrWhiteSpace((string?)ViewBag.Recherche))
+        {
+            <span class="book-management-search-term">
+                Recherche : @ViewBag.Recherche
+            </span>
+        }
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="book-management-grid">
+
+            @foreach (var livre in Model)
+            {
+                <article class="book-management-card">
+
+                    <div class="book-management-card-top">
+                        <div class="book-management-cover" aria-hidden="true">
+                            <span class="book-management-cover-line"></span>
+                            <span class="book-management-cover-title">
+                                LOST IN<br />A GOOD BOOK
+                            </span>
+                            <span class="book-management-cover-bottom">
+                                COLLECTION
+                            </span>
+                        </div>
+
+                        <div class="book-management-card-heading">
+                            <span class="book-management-item-label">
+                                OUVRAGE
+                            </span>
+
+                            <h3>@livre.Titre</h3>
+
+                            <span class="book-management-id">
+                                Référence #@livre.IdLivre
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="book-management-isbn">
+                        <span>ISBN</span>
+                        <strong>
+                            @(string.IsNullOrWhiteSpace(livre.ISBN)
+                                ? "Non renseigné"
+                                : livre.ISBN)
+                        </strong>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(livre.Resume))
+                    {
+                        <p class="book-management-summary">
+                            @livre.Resume
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="book-management-summary book-management-summary-empty">
+                            Aucun résumé disponible pour cet ouvrage.
+                        </p>
+                    }
+
+                    <div class="book-management-metadata">
+                        <div>
+                            <span>Nombre de pages</span>
+                            <strong>
+                                @(livre.NombrePages?.ToString() ?? "N/A")
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Année de publication</span>
+                            <strong>
+                                @(livre.AnneePublication?.ToString() ?? "N/A")
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="book-management-stock">
+                        <div class="book-management-stock-heading">
+                            <span>Disponibilité du stock</span>
+                            <strong>
+                                @livre.ExemplairesDisponibles
+                                <span>/ @livre.NombreExemplaires</span>
+                            </strong>
+                        </div>
+
+                        <div class="book-management-stock-track">
+                            @{
+                                var total = (int)(livre.NombreExemplaires ?? 0);
+                                var disponibles = Math.Clamp(
+                                    (int)(livre.ExemplairesDisponibles ?? 0),
+                                    0,
+                                    total
+                                );
+
+                                var pourcentage = total > 0
+                                    ? (int)Math.Round((double)disponibles / total * 100)
+                                    : 0;
+                                }
+
+                            <div class="book-management-stock-fill"
+                                 style="width: @(pourcentage)%;">
+                            </div>
+                        </div>
+
+                        @if (livre.ExemplairesDisponibles <= 0)
+                        {
+                            <span class="book-management-stock-status book-management-stock-empty">
+                                Aucun exemplaire disponible
+                            </span>
+                        }
+                        else if (livre.ExemplairesDisponibles <= 2)
+                        {
+                            <span class="book-management-stock-status book-management-stock-low">
+                                Stock limité
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="book-management-stock-status book-management-stock-available">
+                                Disponible à l'emprunt
+                            </span>
+                        }
+                    </div>
+
+                    <div class="book-management-actions">
+                        <a asp-controller="Livres"
+                           asp-action="Details"
+                           asp-route-id="@livre.IdLivre"
+                           class="book-management-action book-management-action-details">
+                            Voir
+                        </a>
+
+                        <a asp-controller="Livres"
+                           asp-action="Edit"
+                           asp-route-id="@livre.IdLivre"
+                           class="book-management-action book-management-action-edit">
+                            Modifier
+                        </a>
+
+                        <a asp-controller="Livres"
+                           asp-action="Delete"
+                           asp-route-id="@livre.IdLivre"
+                           class="book-management-action book-management-action-delete">
+                            Supprimer
+                        </a>
+                    </div>
+
+                </article>
+            }
+
+        </div>
+    }
+    else
+    {
+        <section class="book-management-empty">
+            <div class="book-management-empty-icon">▤</div>
+
+            <h2>
+                @(string.IsNullOrWhiteSpace((string?)ViewBag.Recherche)
+                    ? "Votre catalogue est vide"
+                    : "Aucun livre trouvé")
+            </h2>
+
+            <p>
+                @(string.IsNullOrWhiteSpace((string?)ViewBag.Recherche)
+                    ? "Ajoutez votre premier ouvrage pour commencer à constituer le catalogue."
+                    : "Essayez un autre titre, un nom d'auteur ou une catégorie.")
+            </p>
+
+            @if (!string.IsNullOrWhiteSpace((string?)ViewBag.Recherche))
+            {
+                <a asp-controller="Livres"
+                   asp-action="Gestion"
+                   class="book-management-add">
+                    Afficher tous les livres
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Livres"
+                   asp-action="Create"
+                   class="book-management-add">
+                    <span>＋</span>
+                    Ajouter un livre
+                </a>
+            }
+        </section>
+    }
+
+    <div class="book-management-bottom">
+        <a asp-controller="Dashboard"
+           asp-action="Index"
+           class="book-management-bottom-link">
+            ← Retour au tableau de bord
+        </a>
+
+        <span>LOST IN A GOOD BOOK</span>
+    </div>
+
+</div>

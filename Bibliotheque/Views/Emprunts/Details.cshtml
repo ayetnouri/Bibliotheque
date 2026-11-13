@@ -1,0 +1,204 @@
+﻿@model Bibliotheque.Models.Emprunt
+
+@{
+    ViewData["Title"] = "Détails de l'emprunt";
+
+    var statutClass = Model.Statut switch
+    {
+        "EN_COURS" => "loan-detail-status-progress",
+        "EN_RETARD" => "loan-detail-status-late",
+        "RETOURNE" => "loan-detail-status-returned",
+        _ => "loan-detail-status-default"
+    };
+
+    var statutTexte = Model.Statut switch
+    {
+        "EN_COURS" => "En cours",
+        "EN_RETARD" => "En retard",
+        "RETOURNE" => "Retourné",
+        _ => Model.Statut
+    };
+
+    var penalite = Model.Penalite ?? 0;
+}
+
+<div class="loan-detail-page">
+
+    <header class="loan-detail-hero">
+        <a asp-controller="Emprunts"
+           asp-action="Index"
+           class="loan-detail-back">
+            ← Retour aux emprunts
+        </a>
+
+        <div class="loan-detail-hero-content">
+            <div class="loan-detail-icon">↗</div>
+
+            <div>
+                <span class="loan-detail-eyebrow">GESTION DE LA BIBLIOTHÈQUE</span>
+                <h1>Détails de l'emprunt</h1>
+                <p>
+                    Consultez les informations et le suivi de cet emprunt.
+                </p>
+            </div>
+        </div>
+
+        <div class="loan-detail-reference">
+            Emprunt #@Model.IdEmprunt
+        </div>
+    </header>
+
+    <main class="loan-detail-content">
+
+        <section class="loan-detail-main-card">
+
+            <div class="loan-detail-card-heading">
+                <div>
+                    <span class="loan-detail-section-number">01</span>
+                    <h2>Informations générales</h2>
+                </div>
+
+                <span class="loan-detail-status @statutClass">
+                    @statutTexte
+                </span>
+            </div>
+
+            <div class="loan-detail-book-banner">
+                <div class="loan-detail-book-icon">📖</div>
+
+                <div>
+                    <span class="loan-detail-label">LIVRE EMPRUNTÉ</span>
+                    <h3>@Model.TitreLivre</h3>
+                    <p>Référence de l'emprunt : #@Model.IdEmprunt</p>
+                </div>
+            </div>
+
+            <div class="loan-detail-info-grid">
+
+                <div class="loan-detail-info-item">
+                    <span class="loan-detail-info-icon">♙</span>
+                    <div>
+                        <span class="loan-detail-label">ADHÉRENT</span>
+                        <p>@Model.NomAdherent</p>
+                    </div>
+                </div>
+
+                <div class="loan-detail-info-item">
+                    <span class="loan-detail-info-icon">▣</span>
+                    <div>
+                        <span class="loan-detail-label">DATE D'EMPRUNT</span>
+                        <p>@Model.DateEmprunt.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+
+                <div class="loan-detail-info-item">
+                    <span class="loan-detail-info-icon">◷</span>
+                    <div>
+                        <span class="loan-detail-label">RETOUR PRÉVU</span>
+                        <p>@Model.DateRetourPrevue.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+
+                <div class="loan-detail-info-item">
+                    <span class="loan-detail-info-icon">✓</span>
+                    <div>
+                        <span class="loan-detail-label">RETOUR RÉEL</span>
+
+                        @if (Model.DateRetourReelle.HasValue)
+                        {
+                            <p>@Model.DateRetourReelle.Value.ToString("dd/MM/yyyy")</p>
+                        }
+                        else
+                        {
+                            <p class="loan-detail-muted">Pas encore retourné</p>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="loan-detail-penalty">
+                <div>
+                    <span class="loan-detail-label">PÉNALITÉ</span>
+                    <p>Montant associé à cet emprunt</p>
+                </div>
+
+                <strong>@penalite.ToString("0.000") TND</strong>
+            </div>
+
+            <div class="loan-detail-actions">
+                @if (Model.Statut == "EN_COURS" || Model.Statut == "EN_RETARD")
+                {
+                    <a asp-controller="Emprunts"
+                       asp-action="Retour"
+                       asp-route-id="@Model.IdEmprunt"
+                       class="loan-detail-primary-button">
+                        ↩ Enregistrer le retour
+                    </a>
+                }
+
+                <a asp-controller="Emprunts"
+                   asp-action="Index"
+                   class="loan-detail-secondary-button">
+                    Retour à la liste
+                </a>
+            </div>
+
+        </section>
+
+        <aside class="loan-detail-side-card">
+            <div class="loan-detail-side-icon">✦</div>
+
+            <h2>Suivi de l'emprunt</h2>
+            <p class="loan-detail-side-description">
+                Retrouvez rapidement les informations importantes.
+            </p>
+
+            <div class="loan-detail-timeline">
+
+                <div class="loan-detail-timeline-item">
+                    <span class="loan-detail-timeline-dot"></span>
+                    <div>
+                        <strong>Emprunt enregistré</strong>
+                        <p>@Model.DateEmprunt.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+
+                <div class="loan-detail-timeline-item">
+                    <span class="loan-detail-timeline-dot"></span>
+                    <div>
+                        <strong>Date limite de retour</strong>
+                        <p>@Model.DateRetourPrevue.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+
+                <div class="loan-detail-timeline-item">
+                    <span class="loan-detail-timeline-dot"></span>
+                    <div>
+                        <strong>
+                            @(Model.DateRetourReelle.HasValue
+                                ? "Livre retourné"
+                                : "Retour du livre")
+                        </strong>
+
+                        <p>
+                            @(Model.DateRetourReelle.HasValue
+                                ? Model.DateRetourReelle.Value.ToString("dd/MM/yyyy")
+                                : "En attente")
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="loan-detail-side-note">
+                <strong>À retenir</strong>
+                <p>
+                    Vérifiez le statut et la date prévue avant d'enregistrer
+                    le retour du livre.
+                </p>
+            </div>
+        </aside>
+
+    </main>
+</div>

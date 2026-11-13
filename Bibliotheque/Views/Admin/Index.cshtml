@@ -1,0 +1,181 @@
+﻿@{
+    ViewData["Title"] = "Administration";
+}
+
+<div class="admin-dashboard">
+
+    <header class="admin-topbar">
+        <div class="admin-brand">
+            <div class="admin-brand-icon">L</div>
+            <div>
+                <span class="admin-brand-name">LOST IN A GOOD BOOK</span>
+                <span class="admin-brand-subtitle">Gestion de bibliothèque</span>
+            </div>
+        </div>
+
+        <div class="admin-topbar-label">
+            <span class="admin-online-dot"></span>
+            Espace administrateur
+        </div>
+    </header>
+
+    <section class="admin-welcome">
+        <div class="admin-welcome-content">
+            <span class="admin-eyebrow">TABLEAU DE BORD · ADMINISTRATION</span>
+            <h1>Bienvenue dans votre espace</h1>
+            <p>
+                Pilotez votre bibliothèque depuis un espace centralisé.
+                Gérez les comptes, le catalogue et les opérations d'emprunt
+                en toute simplicité.
+            </p>
+            <a asp-controller="Livres"
+               asp-action="Index"
+               class="dashboard-hero-link">
+                Accéder au catalogue →
+            </a>
+        </div>
+
+        <div class="admin-welcome-art" aria-hidden="true">
+            <div class="admin-art-circle admin-art-circle-one"></div>
+            <div class="admin-art-circle admin-art-circle-two"></div>
+            <div class="admin-art-book">
+                <span class="admin-art-book-line"></span>
+                <span class="admin-art-book-line"></span>
+                <span class="admin-art-book-line"></span>
+                <span class="admin-art-book-star">✦</span>
+            </div>
+            <span class="admin-art-caption">LE SAVOIR À PORTÉE DE MAIN</span>
+        </div>
+    </section>
+
+    <section class="admin-management-section">
+        <div class="admin-section-heading">
+            <div>
+                <span class="admin-section-eyebrow">VOTRE BIBLIOTHÈQUE</span>
+                <h2>Centre de gestion</h2>
+                <p>Choisissez un module pour accéder à ses fonctionnalités.</p>
+            </div>
+            <span class="admin-module-count">04 MODULES</span>
+        </div>
+
+        <div class="admin-management-grid">
+
+            <article class="admin-module-card admin-users-card">
+                <div class="admin-module-top">
+                    <div class="admin-module-icon">♙</div>
+                    <span class="admin-module-number">01</span>
+                </div>
+
+                <span class="admin-module-category">COMPTES & ACCÈS</span>
+                <h3>Utilisateurs</h3>
+                <p>
+                    Gérez les comptes, consultez les informations
+                    et administrez les rôles des utilisateurs.
+                </p>
+
+                <div class="admin-module-bottom">
+                    <a asp-controller="Utilisateurs"
+                       asp-action="Index"
+                       class="admin-module-link">
+                        Gérer les utilisateurs
+                        <span>→</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="admin-module-card admin-books-card">
+                <div class="admin-module-top">
+                    <div class="admin-module-icon">▤</div>
+                    <span class="admin-module-number">02</span>
+                </div>
+
+                <span class="admin-module-category">CATALOGUE</span>
+                <h3>Livres</h3>
+                <p>
+                    Consultez le fonds documentaire et gérez les livres
+                    disponibles dans votre bibliothèque.
+                </p>
+
+                <div class="admin-module-bottom">
+                    <a asp-controller="Livres"
+                       asp-action="Gestion"
+                       class="admin-module-link">
+                        Gérer les livres
+                        <span>→</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="admin-module-card admin-loans-card">
+                <div class="admin-module-top">
+                    <div class="admin-module-icon">↔</div>
+                    <span class="admin-module-number">03</span>
+                </div>
+
+                <span class="admin-module-category">CIRCULATION</span>
+                <h3>Emprunts</h3>
+                <p>
+                    Suivez les emprunts, consultez les retours
+                    et contrôlez les opérations de prêt.
+                </p>
+
+                <div class="admin-module-bottom">
+                    <a asp-controller="Emprunts"
+                       asp-action="Index"
+                       class="admin-module-link">
+                        Gérer les emprunts
+                        <span>→</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="admin-module-card admin-stats-card">
+                <div class="admin-module-top">
+                    <div class="admin-module-icon">▥</div>
+                    <span class="admin-module-number">04</span>
+                </div>
+
+                <span class="admin-module-category">SUIVI & ANALYSE</span>
+                <h3>Statistiques</h3>
+                <p>
+                    Consultez les indicateurs et les données
+                    disponibles pour suivre l'activité de la bibliothèque.
+                </p>
+
+                <div class="admin-module-bottom">
+                    <a asp-controller="Statistiques"
+                       asp-action="Index"
+                       class="admin-module-link">
+                        Voir les statistiques
+                        <span>→</span>
+                    </a>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <section class="admin-quick-access">
+        <div class="admin-quick-icon">✦</div>
+        <div class="admin-quick-content">
+            <h3>Une bibliothèque bien organisée</h3>
+            <p>
+                Retrouvez vos outils de gestion depuis ce tableau de bord
+                et accédez rapidement au module dont vous avez besoin.
+            </p>
+        </div>
+        <a asp-controller="Utilisateurs"
+           asp-action="Index"
+           class="admin-quick-link">
+            Accès aux comptes
+            <span>→</span>
+        </a>
+    </section>
+
+    <footer class="admin-dashboard-footer">
+        <span>LOST IN A GOOD BOOK</span>
+        <span class="admin-footer-separator">·</span>
+        <span>Espace d'administration</span>
+    </footer>
+
+</div>

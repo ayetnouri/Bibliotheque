@@ -1,0 +1,217 @@
+﻿@model Bibliotheque.Models.Statistiques
+
+@{
+    ViewData["Title"] = "Statistiques";
+}
+
+<div class="library-stats-page">
+
+    <header class="library-stats-hero">
+        <div class="library-stats-hero-top">
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="library-stats-back">
+                ← Tableau de bord
+            </a>
+
+            <span class="library-stats-hero-tag">
+                VUE D'ENSEMBLE
+            </span>
+        </div>
+
+        <div class="library-stats-hero-content">
+            <div class="library-stats-hero-icon">▥</div>
+
+            <div>
+                <span class="library-stats-eyebrow">
+                    LOST IN A GOOD BOOK
+                </span>
+
+                <h1>Statistiques de la bibliothèque</h1>
+
+                <p>
+                    Suivez les utilisateurs, le catalogue et l'activité
+                    des emprunts en un seul endroit.
+                </p>
+            </div>
+        </div>
+
+        <div class="library-stats-hero-decoration">▤</div>
+    </header>
+
+    <!-- UTILISATEURS -->
+
+    <section class="library-stats-section">
+        <div class="library-stats-section-heading">
+            <div class="library-stats-section-icon">♙</div>
+
+            <div>
+                <h2>Utilisateurs</h2>
+                <p>Répartition des comptes de la bibliothèque</p>
+            </div>
+        </div>
+
+        <div class="library-stats-grid library-stats-users">
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-green">♙</span>
+                    <span class="library-stat-category">COMPTES</span>
+                </div>
+
+                <p class="library-stat-label">Total utilisateurs</p>
+                <h3>@Model.TotalUtilisateurs</h3>
+                <div class="library-stat-bottom">Tous les comptes</div>
+            </article>
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-beige">♧</span>
+                    <span class="library-stat-category">LECTEURS</span>
+                </div>
+
+                <p class="library-stat-label">Adhérents</p>
+                <h3>@Model.TotalAdherents</h3>
+                <div class="library-stat-bottom">Comptes adhérents</div>
+            </article>
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-blue">▤</span>
+                    <span class="library-stat-category">ÉQUIPE</span>
+                </div>
+
+                <p class="library-stat-label">Bibliothécaires</p>
+                <h3>@Model.TotalBibliothecaires</h3>
+                <div class="library-stat-bottom">Gestion de la bibliothèque</div>
+            </article>
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-burgundy">♛</span>
+                    <span class="library-stat-category">ADMINISTRATION</span>
+                </div>
+
+                <p class="library-stat-label">Administrateurs</p>
+                <h3>@Model.TotalAdministrateurs</h3>
+                <div class="library-stat-bottom">Gestion du système</div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- LIVRES -->
+
+    <section class="library-stats-section">
+        <div class="library-stats-section-heading">
+            <div class="library-stats-section-icon">▤</div>
+
+            <div>
+                <h2>Catalogue des livres</h2>
+                <p>Vue d'ensemble du fonds documentaire</p>
+            </div>
+        </div>
+
+        <div class="library-stats-grid library-stats-books">
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-green">▤</span>
+                    <span class="library-stat-category">CATALOGUE</span>
+                </div>
+
+                <p class="library-stat-label">Livres référencés</p>
+                <h3>@Model.TotalLivres</h3>
+                <div class="library-stat-bottom">Titres dans le catalogue</div>
+            </article>
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-beige">▥</span>
+                    <span class="library-stat-category">COLLECTION</span>
+                </div>
+
+                <p class="library-stat-label">Total exemplaires</p>
+                <h3>@Model.TotalExemplaires</h3>
+                <div class="library-stat-bottom">Exemplaires enregistrés</div>
+            </article>
+
+            <article class="library-stat-card library-stat-available">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-green">✓</span>
+                    <span class="library-stat-category">DISPONIBILITÉ</span>
+                </div>
+
+                <p class="library-stat-label">Exemplaires disponibles</p>
+                <h3>@Model.ExemplairesDisponibles</h3>
+                <div class="library-stat-bottom">Disponibles pour l'emprunt</div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- EMPRUNTS -->
+
+    <section class="library-stats-section">
+        <div class="library-stats-section-heading">
+            <div class="library-stats-section-icon">↗</div>
+
+            <div>
+                <h2>Activité des emprunts</h2>
+                <p>Suivi des retours et des emprunts en cours</p>
+            </div>
+        </div>
+
+        <div class="library-stats-grid library-stats-loans">
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-blue">◷</span>
+                    <span class="library-stat-category">EN COURS</span>
+                </div>
+
+                <p class="library-stat-label">Emprunts en cours</p>
+                <h3>@Model.EmpruntsEnCours</h3>
+                <div class="library-stat-bottom">Livres non encore retournés</div>
+            </article>
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-green">✓</span>
+                    <span class="library-stat-category">TERMINÉS</span>
+                </div>
+
+                <p class="library-stat-label">Emprunts retournés</p>
+                <h3>@Model.EmpruntsRetournes</h3>
+                <div class="library-stat-bottom">Retours enregistrés</div>
+            </article>
+
+            <article class="library-stat-card">
+                <div class="library-stat-card-top">
+                    <span class="library-stat-icon stat-icon-burgundy">!</span>
+                    <span class="library-stat-category">À SURVEILLER</span>
+                </div>
+
+                <p class="library-stat-label">Emprunts en retard</p>
+                <h3>@Model.EmpruntsEnRetard</h3>
+                <div class="library-stat-bottom">Retours à vérifier</div>
+            </article>
+
+        </div>
+    </section>
+
+    <footer class="library-stats-footer">
+        <p>
+            <a href="c:\users\ayet\source\repos\bibliotheque\bibliotheque\views\statistiques\index.cshtml">c:\users\ayet\source\repos\bibliotheque\bibliotheque\views\statistiques\index.cshtml</a>
+            <span class="library-stats-footer-dot"></span>
+            Tableau de bord statistique de la bibliothèque
+        </p>
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="library-stats-footer-button">
+            ← Retour au tableau de bord
+        </a>
+    </footer>
+
+</div>

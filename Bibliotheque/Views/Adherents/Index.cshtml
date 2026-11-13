@@ -1,0 +1,155 @@
+﻿@model List<Bibliotheque.Models.Adherent>
+
+@{
+    ViewData["Title"] = "Les adhérents";
+}
+
+<div class="adherents-page">
+
+    <section class="adherents-hero">
+        <div class="adherents-hero-content">
+            <p class="adherents-eyebrow">LOST IN A GOOD BOOK · GESTION</p>
+
+            <h1>Les adhérents de votre bibliothèque.</h1>
+
+            <p class="adherents-hero-description">
+                Retrouvez les informations des lecteurs et consultez
+                leurs coordonnées depuis votre espace professionnel.
+            </p>
+
+            <div class="adherents-hero-meta">
+                <span class="adherents-meta-icon">♙</span>
+                <span>
+                    <strong>@Model.Count</strong>
+                    @(Model.Count == 1 ? "adhérent enregistré" : "adhérents enregistrés")
+                </span>
+            </div>
+        </div>
+
+        <div class="adherents-hero-decoration" aria-hidden="true">
+            <span class="adherents-decoration-small">LA COMMUNAUTÉ</span>
+            <span class="adherents-decoration-large">Nos<br />lecteurs</span>
+            <span class="adherents-decoration-line"></span>
+            <span class="adherents-decoration-caption">
+                Chaque lecteur, une nouvelle histoire.
+            </span>
+        </div>
+    </section>
+
+    <section class="adherents-content">
+
+        <div class="adherents-section-heading">
+            <div>
+                <p class="adherents-section-label">ANNUAIRE</p>
+                <h2>Liste des adhérents</h2>
+            </div>
+
+            <p class="adherents-section-description">
+                Les coordonnées disponibles pour chaque lecteur.
+            </p>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="adherents-empty-state">
+                <div class="adherents-empty-icon" aria-hidden="true">♙</div>
+                <h3>Aucun adhérent pour le moment</h3>
+                <p>
+                    Aucun adhérent n'est actuellement enregistré
+                    dans la bibliothèque.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="adherents-grid">
+
+                @foreach (var adherent in Model)
+                {
+                    var nomComplet = $"{adherent.Prenom} {adherent.Nom}".Trim();
+
+                    var initiales =
+                        $"{(string.IsNullOrWhiteSpace(adherent.Prenom) ? "" : adherent.Prenom.Substring(0, 1))}" +
+                        $"{(string.IsNullOrWhiteSpace(adherent.Nom) ? "" : adherent.Nom.Substring(0, 1))}";
+
+                    var estActif = string.Equals(
+                        adherent.Etat,
+                        "ACTIF",
+                        StringComparison.OrdinalIgnoreCase
+                    );
+
+                    <article class="adherent-card">
+
+                        <div class="adherent-card-top">
+                            <span class="adherent-card-label">ADHÉRENT</span>
+
+                            <span class="adherent-status @(estActif ? "adherent-status-active" : "adherent-status-inactive")">
+                                <span class="adherent-status-dot"></span>
+                                @(estActif ? "Actif" : (string.IsNullOrWhiteSpace(adherent.Etat) ? "Non renseigné" : adherent.Etat))
+                            </span>
+                        </div>
+
+                        <div class="adherent-identity">
+                            <div class="adherent-avatar" aria-hidden="true">
+                                @initiales.ToUpperInvariant()
+                            </div>
+
+                            <div class="adherent-name-block">
+                                <h3>@nomComplet</h3>
+                                <p class="adherent-email">@adherent.Email</p>
+                            </div>
+                        </div>
+
+                        <div class="adherent-card-divider"></div>
+
+                        <div class="adherent-contact-list">
+
+                            <div class="adherent-contact-item">
+                                <span class="adherent-contact-icon" aria-hidden="true">☎</span>
+                                <div>
+                                    <span class="adherent-contact-label">Téléphone</span>
+                                    <p>
+                                        @(string.IsNullOrWhiteSpace(adherent.Telephone)
+                                            ? "Non renseigné"
+                                            : adherent.Telephone)
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="adherent-contact-item">
+                                <span class="adherent-contact-icon" aria-hidden="true">⌖</span>
+                                <div>
+                                    <span class="adherent-contact-label">Adresse</span>
+                                    <p>
+                                        @(string.IsNullOrWhiteSpace(adherent.Adresse)
+                                            ? "Non renseignée"
+                                            : adherent.Adresse)
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="adherent-card-footer">
+                            <span>LOST IN A GOOD BOOK</span>
+                            <span class="adherent-footer-mark">✦</span>
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+        <div class="adherents-back-area">
+            <a asp-controller="Bibliothecaire"
+               asp-action="Index"
+               class="adherents-back-button">
+                <span aria-hidden="true">←</span>
+                Retour au tableau de bord
+            </a>
+        </div>
+
+    </section>
+
+</div>

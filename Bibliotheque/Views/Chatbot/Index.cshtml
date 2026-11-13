@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "BookBot AI";
+}
+<link rel="stylesheet" href="~/css/chatbot.css" asp-append-version="true" />
+
+
+<div class="chatbot-page">
+
+    <div class="chatbot-header">
+        <h1>BookBot AI</h1>
+        <p>Votre assistant intelligent de bibliothèque.</p>
+    </div>
+
+    <div class="chatbot-card">
+
+        <div class="chatbot-top">
+            <div class="chatbot-avatar">📚</div>
+
+            <div>
+                <h2>BookBot AI</h2>
+                <p>Assistant de bibliothèque</p>
+            </div>
+        </div>
+
+        <div class="chatbot-messages" id="chatMessages">
+
+            <div class="chat-message bot-message">
+                Bonjour ! 👋 Bienvenue dans votre bibliothèque.
+                Je suis BookBot. Je pourrai vous aider à trouver
+                des livres et à comprendre le fonctionnement des emprunts.
+                Que souhaitez-vous savoir ?
+            </div>
+
+        </div>
+
+        <form class="chatbot-form" id="chatForm">
+            <input type="text"
+                   id="messageInput"
+                   placeholder="Posez votre question..."
+                   autocomplete="off"
+                   required />
+
+            <button type="submit">Envoyer</button>
+        </form>
+
+        <div class="chatbot-note">
+            Assistant de la bibliothèque — version en développement
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const chatForm = document.getElementById("chatForm");
+    const messageInput = document.getElementById("messageInput");
+    const chatMessages = document.getElementById("chatMessages");
+
+    chatForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const message = messageInput.value.trim();
+
+        if (message === "") {
+            return;
+        }
+
+        // Afficher le message du visiteur
+        ajouterMessage(message, "user-message");
+
+        // Vider le champ et désactiver le bouton pendant la réponse
+        messageInput.value = "";
+
+        const boutonEnvoyer = chatForm.querySelector("button");
+        boutonEnvoyer.disabled = true;
+        boutonEnvoyer.textContent = "Réponse en cours...";
+
+        const chargement = ajouterMessage(
+            "BookBot réfléchit... 🤔",
+            "bot-message"
+        );
+
+        try {
+            // Envoyer la question au contrôleur ASP.NET Core
+            const response = await fetch("/Chatbot/EnvoyerMessage", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: message
+                })
+            });
+
+            const resultat = await response.json();
+
+            // Retirer le message de chargement
+            chargement.remove();
+
+            if (!response.ok) {
+                ajouterMessage(
+                    resultat.reponse || "Une erreur est survenue.",
+                    "bot-message"
+                );
+            } else {
+                ajouterMessage(
+                    resultat.reponse || "Je n'ai pas reçu de réponse.",
+                    "bot-message"
+                );
+            }
+        }
+        catch (erreur) {
+            chargement.remove();
+
+            ajouterMessage(
+                "Impossible de contacter BookBot. Vérifiez que l'application et Ollama fonctionnent.",
+                "bot-message"
+            );
+
+            console.error("Erreur BookBot :", erreur);
+        }
+        finally {
+            boutonEnvoyer.disabled = false;
+            boutonEnvoyer.textContent = "Envoyer";
+            messageInput.focus();
+        }
+    });
+
+    function ajouterMessage(texte, classe) {
+        const messageElement = document.createElement("div");
+
+        messageElement.className = "chat-message " + classe;
+        messageElement.textContent = texte;
+
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        return messageElement;
+    }
+</script>

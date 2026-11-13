@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "Créer un compte";
+}
+
+<div class="register-page-redesigned">
+
+    <aside class="register-showcase">
+        <img src="@Url.Content("~/image-login/bibliotheque-register.jpg")"
+             alt="Bibliothèque accueillante et chaleureuse"
+             class="register-showcase-image" />
+
+        <div class="register-showcase-overlay"></div>
+
+        <a asp-controller="Livres"
+           asp-action="Index"
+           class="register-showcase-brand">
+            <span class="register-brand-symbol">✧</span>
+            <span>LOST IN A GOOD BOOK</span>
+        </a>
+
+        <div class="register-showcase-message">
+            <span class="register-gold-line"></span>
+            <h2>Chaque livre ouvre une porte vers un nouvel univers.</h2>
+            <p>Votre prochaine histoire commence ici.</p>
+        </div>
+
+        <div class="register-showcase-bottom">
+            LIRE · DÉCOUVRIR · GRANDIR
+        </div>
+    </aside>
+
+    <main class="register-panel">
+        <div class="register-panel-inner">
+
+            <p class="register-eyebrow">REJOIGNEZ NOTRE COMMUNAUTÉ</p>
+            <h1>Créer votre compte</h1>
+            <p class="register-description">
+                Quelques informations suffisent pour accéder
+                aux services de votre bibliothèque.
+            </p>
+
+            @if (ViewBag.Erreur != null)
+            {
+                <div class="register-alert" role="alert">
+                    @ViewBag.Erreur
+                </div>
+            }
+
+            <form asp-controller="Account"
+                  asp-action="Register"
+                  method="post"
+                  class="register-form-redesigned">
+
+                @Html.AntiForgeryToken()
+
+                <div class="register-fields-grid">
+
+                    <div class="register-field">
+                        <label for="nom">Nom <span>*</span></label>
+                        <input type="text"
+                               id="nom"
+                               name="nom"
+                               placeholder="Votre nom"
+                               autocomplete="family-name"
+                               required />
+                    </div>
+
+                    <div class="register-field">
+                        <label for="prenom">Prénom <span>*</span></label>
+                        <input type="text"
+                               id="prenom"
+                               name="prenom"
+                               placeholder="Votre prénom"
+                               autocomplete="given-name"
+                               required />
+                    </div>
+
+                    <div class="register-field register-field-full">
+                        <label for="email">Adresse e-mail <span>*</span></label>
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               placeholder="exemple@email.com"
+                               autocomplete="email"
+                               required />
+                    </div>
+
+                    <div class="register-field">
+                        <label for="password">Mot de passe <span>*</span></label>
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               placeholder="Créer un mot de passe"
+                               autocomplete="new-password"
+                               required />
+                    </div>
+
+                    <div class="register-field">
+                        <label for="confirmationPassword">Confirmation <span>*</span></label>
+                        <input type="password"
+                               id="confirmationPassword"
+                               name="confirmationPassword"
+                               placeholder="Répéter le mot de passe"
+                               autocomplete="new-password"
+                               required />
+                    </div>
+
+                    <div class="register-field register-field-full">
+                        <label for="telephone">Téléphone</label>
+                        <input type="tel"
+                               id="telephone"
+                               name="telephone"
+                               placeholder="Votre numéro de téléphone"
+                               autocomplete="tel" />
+                    </div>
+
+                    <div class="register-field register-field-full">
+                        <label for="adresse">Adresse</label>
+                        <textarea id="adresse"
+                                  name="adresse"
+                                  rows="2"
+                                  placeholder="Votre adresse"
+                                  autocomplete="street-address"></textarea>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="register-submit">
+                    <span>Créer mon compte</span>
+                    <span aria-hidden="true">→</span>
+                </button>
+
+            </form>
+
+            <div class="register-login-link">
+                <span>Vous avez déjà un compte ?</span>
+                <a asp-controller="Account"
+                   asp-action="Login">
+                    Se connecter
+                </a>
+            </div>
+
+            <div class="register-bottom-note">
+                <span></span>
+                VOTRE ESPACE PERSONNEL, VOTRE PASSION
+                <span></span>
+            </div>
+
+        </div>
+    </main>
+
+</div>

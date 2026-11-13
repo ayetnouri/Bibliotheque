@@ -1,0 +1,194 @@
+﻿@model List<Bibliotheque.Models.Emprunt>
+
+@{
+    ViewData["Title"] = "Gestion des emprunts";
+}
+
+<div class="loans-management-page">
+
+    <div class="loans-management-hero">
+        <div class="loans-management-hero-icon">↗</div>
+        <div>
+            <span class="loans-management-eyebrow">ESPACE BIBLIOTHÉCAIRE</span>
+            <h1>Gestion des emprunts</h1>
+            <p>Suivez les emprunts, les échéances et les retours des ouvrages.</p>
+        </div>
+    </div>
+
+    <div class="loans-management-summary">
+        <div class="loans-summary-card">
+            <span class="loans-summary-icon">▤</span>
+            <div>
+                <span class="loans-summary-label">Total des emprunts affichés</span>
+                <strong>@Model.Count</strong>
+            </div>
+        </div>
+
+        <div class="loans-summary-card">
+            <span class="loans-summary-icon loans-summary-active">↗</span>
+            <div>
+                <span class="loans-summary-label">Emprunts en cours</span>
+                <strong>@Model.Count(e => e.Statut == "EN_COURS")</strong>
+            </div>
+        </div>
+
+        <div class="loans-summary-card">
+            <span class="loans-summary-icon loans-summary-late">!</span>
+            <div>
+                <span class="loans-summary-label">Emprunts en retard</span>
+                <strong>@Model.Count(e => e.Statut == "EN_RETARD")</strong>
+            </div>
+        </div>
+
+        <div class="loans-summary-card">
+            <span class="loans-summary-icon loans-summary-returned">✓</span>
+            <div>
+                <span class="loans-summary-label">Livres retournés</span>
+                <strong>@Model.Count(e => e.Statut == "RETOURNE")</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="loans-management-toolbar">
+        <div>
+            <h2>Registre des emprunts</h2>
+            <p>Consultez les opérations enregistrées dans la bibliothèque.</p>
+        </div>
+
+        <a asp-controller="Emprunts"
+           asp-action="Create"
+           class="loans-management-add">
+            <span>＋</span> Enregistrer un emprunt
+        </a>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="loans-management-empty">
+            <div class="loans-empty-icon">▤</div>
+            <h2>Aucun emprunt enregistré</h2>
+            <p>
+                Les emprunts apparaîtront ici dès que vous en aurez enregistré un.
+            </p>
+            <a asp-controller="Emprunts"
+               asp-action="Create"
+               class="loans-management-add">
+                Enregistrer le premier emprunt
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="loans-management-grid">
+
+            @foreach (var emprunt in Model)
+            {
+                var statutClasse = emprunt.Statut switch
+                {
+                    "EN_COURS" => "loan-status-current",
+                    "EN_RETARD" => "loan-status-late",
+                    "RETOURNE" => "loan-status-returned",
+                    _ => "loan-status-other"
+                };
+
+                var statutLibelle = emprunt.Statut switch
+                {
+                    "EN_COURS" => "En cours",
+                    "EN_RETARD" => "En retard",
+                    "RETOURNE" => "Retourné",
+                    _ => emprunt.Statut
+                };
+
+                <article class="loans-management-card">
+
+                    <div class="loans-card-top">
+                        <span class="loans-card-reference">
+                            EMPRUNT #@emprunt.IdEmprunt
+                        </span>
+
+                        <span class="loan-status-badge @statutClasse">
+                            @statutLibelle
+                        </span>
+                    </div>
+
+                    <div class="loans-card-book">
+                        <div class="loans-card-book-icon">▤</div>
+                        <div class="loans-card-book-info">
+                            <span>OUVRAGE EMPRUNTÉ</span>
+                            <h3>@emprunt.TitreLivre</h3>
+                        </div>
+                    </div>
+
+                    <div class="loans-card-member">
+                        <span class="loans-member-icon">♙</span>
+                        <div>
+                            <span>ADHÉRENT</span>
+                            <strong>@emprunt.NomAdherent</strong>
+                        </div>
+                    </div>
+
+                    <div class="loans-card-dates">
+                        <div>
+                            <span>Date d'emprunt</span>
+                            <strong>@emprunt.DateEmprunt.ToString("dd/MM/yyyy")</strong>
+                        </div>
+
+                        <div>
+                            <span>Retour prévu</span>
+                            <strong>@emprunt.DateRetourPrevue.ToString("dd/MM/yyyy")</strong>
+                        </div>
+                    </div>
+
+                    @if (emprunt.DateRetourReelle.HasValue)
+                    {
+                        <div class="loans-card-return-date">
+                            <span>✓</span>
+                            Retour réel :
+                            <strong>@emprunt.DateRetourReelle.Value.ToString("dd/MM/yyyy")</strong>
+                        </div>
+                    }
+
+                    <div class="loans-card-penalty">
+                        <span>Pénalité</span>
+                        <strong>
+                            @(emprunt.Penalite.HasValue
+                                ? emprunt.Penalite.Value.ToString("0.00") + " DT"
+                                : "0,00 DT")
+                        </strong>
+                    </div>
+
+                    <div class="loans-card-actions">
+                        <a asp-controller="Emprunts"
+                           asp-action="Details"
+                           asp-route-id="@emprunt.IdEmprunt"
+                           class="loans-action-details">
+                            Voir les détails
+                        </a>
+
+                        @if (emprunt.Statut == "EN_COURS" ||
+                             emprunt.Statut == "EN_RETARD")
+                        {
+                            <a asp-controller="Emprunts"
+                               asp-action="Retour"
+                               asp-route-id="@emprunt.IdEmprunt"
+                               class="loans-action-return">
+                                ↩ Enregistrer le retour
+                            </a>
+                        }
+                    </div>
+
+                </article>
+            }
+
+        </div>
+    }
+
+    <div class="loans-management-bottom">
+        <a asp-controller="Dashboard"
+           asp-action="Index"
+           class="loans-management-back">
+            ← Retour au tableau de bord
+        </a>
+    </div>
+
+</div>

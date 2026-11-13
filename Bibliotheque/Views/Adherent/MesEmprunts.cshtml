@@ -1,0 +1,182 @@
+﻿@model List<Bibliotheque.Models.Emprunt>
+
+@{
+    ViewData["Title"] = "Mes emprunts";
+}
+
+<div class="my-loans-page">
+
+    <section class="my-loans-hero">
+        <div class="my-loans-hero-content">
+            <p class="my-loans-eyebrow">MON ESPACE PERSONNEL</p>
+            <h1>Mes emprunts<span>.</span></h1>
+            <p>
+                Retrouvez vos lectures, consultez les dates de retour
+                et suivez la situation de chacun de vos emprunts.
+            </p>
+        </div>
+
+        <div class="my-loans-hero-decoration" aria-hidden="true">
+            <span class="loans-book-symbol">▤</span>
+            <span class="loans-decoration-line"></span>
+            <span class="loans-decoration-text">LE PLAISIR DE LIRE</span>
+        </div>
+    </section>
+
+    <section class="my-loans-content">
+
+        <div class="my-loans-heading">
+            <div>
+                <p class="my-loans-section-label">VOTRE HISTORIQUE</p>
+                <h2>Le suivi de vos lectures</h2>
+            </div>
+
+            <div class="my-loans-count">
+                <span class="my-loans-count-number">@Model.Count</span>
+                <span>@(Model.Count > 1 ? "emprunts" : "emprunt")</span>
+            </div>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="my-loans-empty">
+                <div class="my-loans-empty-icon" aria-hidden="true">▤</div>
+                <h3>Votre prochaine lecture vous attend</h3>
+                <p>
+                    Vous n'avez pas encore d'emprunt enregistré.
+                    Explorez le catalogue pour découvrir votre prochain livre.
+                </p>
+                <a asp-controller="Livres"
+                   asp-action="Index"
+                   class="my-loans-primary-button">
+                    Découvrir le catalogue <span>→</span>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="my-loans-list">
+
+                @foreach (var emprunt in Model)
+                {
+                    var statut = (emprunt.Statut ?? "").Trim().ToUpperInvariant();
+
+                    var statutClasse = statut switch
+                    {
+                        "RETOURNE" => "loan-status-returned",
+                        "EN_RETARD" => "loan-status-late",
+                        "EN_COURS" => "loan-status-current",
+                        _ => "loan-status-other"
+                    };
+
+                    var statutTexte = statut switch
+                    {
+                        "RETOURNE" => "Livre retourné",
+                        "EN_RETARD" => "Retour en retard",
+                        "EN_COURS" => "Emprunt en cours",
+                        _ => emprunt.Statut
+                    };
+
+                    <article class="my-loan-card">
+
+                        <div class="my-loan-card-accent"></div>
+
+                        <div class="my-loan-main">
+
+                            <div class="my-loan-book-icon" aria-hidden="true">
+                                <span>▤</span>
+                            </div>
+
+                            <div class="my-loan-book-info">
+                                <p class="my-loan-overline">
+                                    EMPRUNT
+                                    <span>·</span>
+                                    @emprunt.DateEmprunt.ToString("dd/MM/yyyy")
+                                </p>
+
+                                <h3>@emprunt.TitreLivre</h3>
+
+                                <span class="my-loan-status @statutClasse">
+                                    <span class="my-loan-status-dot"></span>
+                                    @statutTexte
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="my-loan-dates">
+
+                            <div class="my-loan-date-item">
+                                <span class="my-loan-date-icon" aria-hidden="true">↗</span>
+                                <div>
+                                    <p>Date d'emprunt</p>
+                                    <strong>
+                                        @emprunt.DateEmprunt.ToString("dd/MM/yyyy")
+                                    </strong>
+                                </div>
+                            </div>
+
+                            <div class="my-loan-date-item">
+                                <span class="my-loan-date-icon" aria-hidden="true">◷</span>
+                                <div>
+                                    <p>Retour prévu</p>
+                                    <strong>
+                                        @emprunt.DateRetourPrevue.ToString("dd/MM/yyyy")
+                                    </strong>
+                                </div>
+                            </div>
+
+                            <div class="my-loan-date-item">
+                                <span class="my-loan-date-icon" aria-hidden="true">✓</span>
+                                <div>
+                                    <p>Retour réel</p>
+                                    @if (emprunt.DateRetourReelle.HasValue)
+                                    {
+                                        <strong>
+                                            @emprunt.DateRetourReelle.Value.ToString("dd/MM/yyyy")
+                                        </strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="my-loan-date-pending">
+                                            Pas encore retourné
+                                        </strong>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+
+                        @if (emprunt.Penalite.HasValue && emprunt.Penalite.Value > 0)
+                        {
+                            <div class="my-loan-penalty">
+                                <span>Pénalité à régler</span>
+                                <strong>
+                                    @emprunt.Penalite.Value.ToString("0.00") TND
+                                </strong>
+                            </div>
+                        }
+
+                    </article>
+                }
+
+            </div>
+        }
+
+        <div class="my-loans-back">
+            <a asp-controller="Adherent"
+               asp-action="Index"
+               class="my-loans-back-link">
+                <span aria-hidden="true">←</span>
+                Retour à mon espace
+            </a>
+        </div>
+
+    </section>
+
+    <footer class="my-loans-footer">
+        <span>LOST IN A GOOD BOOK</span>
+        <span>Chaque livre ouvre un nouvel univers.</span>
+    </footer>
+
+</div>

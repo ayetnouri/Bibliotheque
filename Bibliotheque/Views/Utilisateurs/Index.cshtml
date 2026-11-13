@@ -1,0 +1,201 @@
+﻿@model List<Bibliotheque.Models.Utilisateur>
+
+@{
+    ViewData["Title"] = "Gestion des utilisateurs";
+}
+
+<div class="users-admin-page">
+
+    <!-- EN-TÊTE -->
+    <section class="users-page-header">
+        <div class="users-header-text">
+            <span class="users-eyebrow">ESPACE ADMINISTRATEUR</span>
+            <h1>Gestion des utilisateurs</h1>
+            <p>
+                Gérez les comptes, consultez les informations
+                et contrôlez les accès à votre bibliothèque.
+            </p>
+        </div>
+
+        <div class="users-header-icon" aria-hidden="true">
+            <span>♙</span>
+        </div>
+    </section>
+
+    <!-- BARRE D'OUTILS -->
+    <section class="users-toolbar">
+
+        <form asp-controller="Utilisateurs"
+              asp-action="Index"
+              method="get"
+              class="users-search-form">
+
+            <div class="users-search-field">
+                <span aria-hidden="true">⌕</span>
+                <input type="text"
+                       name="recherche"
+                       value="@ViewBag.Recherche"
+                       placeholder="Nom, prénom, email ou rôle..." />
+            </div>
+
+            <button type="submit" class="users-btn users-btn-primary">
+                Rechercher
+            </button>
+        </form>
+
+        <a asp-controller="Utilisateurs"
+           asp-action="Create"
+           class="users-btn users-btn-add">
+            <span aria-hidden="true">＋</span>
+            Ajouter un utilisateur
+        </a>
+
+    </section>
+
+    <!-- COMPTEUR -->
+    <div class="users-results-heading">
+        <div>
+            <h2>Les comptes utilisateurs</h2>
+            <p>Consultez les informations et gérez les accès.</p>
+        </div>
+
+        <span class="users-count">
+            @Model.Count utilisateur(s)
+        </span>
+    </div>
+
+    <!-- LISTE -->
+    <section class="users-list">
+
+        @if (Model.Count == 0)
+        {
+            <div class="users-empty-state">
+                <div class="users-empty-icon" aria-hidden="true">⌕</div>
+                <h3>Aucun utilisateur trouvé</h3>
+                <p>
+                    Aucun compte ne correspond à votre recherche.
+                    Essayez un autre nom, email ou rôle.
+                </p>
+
+                <a asp-controller="Utilisateurs"
+                   asp-action="Index"
+                   class="users-btn users-btn-secondary">
+                    Afficher tous les utilisateurs
+                </a>
+            </div>
+        }
+        else
+        {
+            @foreach (var utilisateur in Model)
+            {
+                <article class="users-card">
+
+                    <div class="users-avatar" aria-hidden="true">
+                        @if (!string.IsNullOrWhiteSpace(utilisateur.Prenom))
+                        {
+                            @utilisateur.Prenom.Substring(0, 1).ToUpper()
+                        }
+                        @if (!string.IsNullOrWhiteSpace(utilisateur.Nom))
+                        {
+                            @utilisateur.Nom.Substring(0, 1).ToUpper()
+                        }
+                    </div>
+
+                    <div class="users-main-info">
+                        <h3>@utilisateur.Prenom @utilisateur.Nom</h3>
+
+                        <p class="users-email">
+                            <span aria-hidden="true">✉</span>
+                            @utilisateur.Email
+                        </p>
+
+                        @if (utilisateur.DateCreation.HasValue)
+                        {
+                            <p class="users-created">
+                                Compte créé le
+                                @utilisateur.DateCreation.Value.ToString("dd/MM/yyyy")
+                            </p>
+                        }
+                    </div>
+
+                    <div class="users-badges">
+                        <span class="users-role-badge">
+                            @utilisateur.Role
+                        </span>
+
+                        <span class="users-status-badge @(utilisateur.Etat == "ACTIF" ? "is-active" : "is-inactive")">
+                            <span class="users-status-dot"></span>
+                            @utilisateur.Etat
+                        </span>
+                    </div>
+
+                    <div class="users-actions">
+
+                        <a asp-controller="Utilisateurs"
+                           asp-action="Details"
+                           asp-route-id="@utilisateur.IdUtilisateur"
+                           class="users-action-btn users-action-view">
+                            Voir
+                        </a>
+
+                        <a asp-controller="Utilisateurs"
+                           asp-action="Edit"
+                           asp-route-id="@utilisateur.IdUtilisateur"
+                           class="users-action-btn users-action-edit">
+                            Modifier
+                        </a>
+
+                        @if (utilisateur.Etat == "ACTIF")
+                        {
+                            <form asp-controller="Utilisateurs"
+                                  asp-action="Desactiver"
+                                  asp-route-id="@utilisateur.IdUtilisateur"
+                                  method="post"
+                                  class="users-action-form"
+                                  onsubmit="return confirm('Voulez-vous vraiment désactiver cet utilisateur ?');">
+
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit"
+                                        class="users-action-btn users-action-disable">
+                                    Désactiver
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Utilisateurs"
+                                  asp-action="Reactiver"
+                                  asp-route-id="@utilisateur.IdUtilisateur"
+                                  method="post"
+                                  class="users-action-form"
+                                  onsubmit="return confirm('Voulez-vous vraiment réactiver cet utilisateur ?');">
+
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit"
+                                        class="users-action-btn users-action-reactivate">
+                                    Réactiver
+                                </button>
+                            </form>
+                        }
+
+                    </div>
+
+                </article>
+            }
+        }
+
+    </section>
+
+    <!-- RETOUR -->
+    <div class="users-footer">
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="users-back-link">
+            <span aria-hidden="true">←</span>
+            Retour au tableau de bord
+        </a>
+    </div>
+
+</div>

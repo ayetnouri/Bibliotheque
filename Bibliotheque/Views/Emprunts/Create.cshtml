@@ -1,0 +1,136 @@
+﻿@model Bibliotheque.Models.Emprunt
+
+@{
+    ViewData["Title"] = "Enregistrer un emprunt";
+}
+
+<div class="loan-create-page">
+
+    <div class="loan-create-hero">
+        <div class="loan-create-hero-icon">↗</div>
+        <div>
+            <span class="loan-create-eyebrow">GESTION DE LA BIBLIOTHÈQUE</span>
+            <h1>Enregistrer un emprunt</h1>
+            <p>Associez un adhérent à un ouvrage et définissez les dates de prêt.</p>
+        </div>
+    </div>
+
+    <form asp-controller="Emprunts"
+          asp-action="Create"
+          method="post"
+          class="loan-create-form">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="All"
+             class="loan-create-validation"></div>
+
+        <section class="loan-create-card">
+            <div class="loan-create-section-title">
+                <span class="loan-create-number">01</span>
+                <div>
+                    <h2>Adhérent et ouvrage</h2>
+                    <p>Choisissez la personne et le livre concernés par l'emprunt.</p>
+                </div>
+            </div>
+
+            <div class="loan-create-fields">
+
+                <div class="loan-create-field">
+                    <label asp-for="IdUtilisateur">Adhérent</label>
+
+                    <select asp-for="IdUtilisateur" class="form-control">
+                        <option value="">-- Choisir un adhérent --</option>
+                        @foreach (var adherent in ViewBag.Adherents)
+                        {
+                            <option value="@adherent.Id">
+                                @adherent.Prenom @adherent.Nom
+                            </option>
+                        }
+                    </select>
+
+                    <span asp-validation-for="IdUtilisateur"></span>
+                </div>
+
+                <div class="loan-create-field">
+                    <label asp-for="IdLivre">Livre</label>
+
+                    <select asp-for="IdLivre" class="form-control">
+                        <option value="">-- Choisir un livre --</option>
+                        @foreach (var livre in ViewBag.Livres)
+                        {
+                            <option value="@livre.Id">
+                                @livre.Titre (@livre.Disponibles disponibles)
+                            </option>
+                        }
+                    </select>
+
+                    <span asp-validation-for="IdLivre"></span>
+
+                    <small>
+                        Vérifiez qu'il reste au moins un exemplaire disponible.
+                    </small>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="loan-create-card">
+            <div class="loan-create-section-title">
+                <span class="loan-create-number">02</span>
+                <div>
+                    <h2>Dates de l'emprunt</h2>
+                    <p>Définissez la date de départ et la date limite de retour.</p>
+                </div>
+            </div>
+
+            <div class="loan-create-fields">
+
+                <div class="loan-create-field">
+                    <label asp-for="DateEmprunt">Date d'emprunt</label>
+
+                    <input asp-for="DateEmprunt"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="DateEmprunt"></span>
+                </div>
+
+                <div class="loan-create-field">
+                    <label asp-for="DateRetourPrevue">Date de retour prévue</label>
+
+                    <input asp-for="DateRetourPrevue"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="DateRetourPrevue"></span>
+                </div>
+
+            </div>
+
+            <div class="loan-create-note">
+                <span>ⓘ</span>
+                Vérifiez que la date de retour prévue est postérieure ou égale à la date d'emprunt.
+            </div>
+        </section>
+
+        <div class="loan-create-actions">
+            <a asp-controller="Emprunts"
+               asp-action="Index"
+               class="loan-create-cancel">
+                Annuler
+            </a>
+
+            <button type="submit" class="loan-create-submit">
+                <span>✓</span> Enregistrer l'emprunt
+            </button>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Espace Bibliothécaire";
+}
+
+<div class="dashboard librarian-dashboard">
+
+    <div class="dashboard-header">
+        <p class="dashboard-subtitle">ESPACE BIBLIOTHÉCAIRE</p>
+        <h1>Bienvenue dans votre espace</h1>
+        <p>
+            Gérez le catalogue, les emprunts et les adhérents
+            de la bibliothèque.
+        </p>
+    </div>
+
+    <div class="dashboard-cards">
+
+        <div class="dashboard-card">
+            <div class="card-icon"> </div>
+            <h2>Catalogue</h2>
+            <p>Consulter et gérer les livres de la bibliothèque.</p>
+            <a asp-controller="Livres"
+               asp-action="Gestion"
+               class="dashboard-button">
+                Gérer le catalogue →
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-icon"> </div>
+            <h2>Emprunts</h2>
+            <p>Enregistrer les emprunts et gérer les retours.</p>
+            <a asp-controller="Emprunts"
+               asp-action="Index"
+               class="dashboard-button">
+                Gérer les emprunts →
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-icon"> </div>
+            <h2>Adhérents</h2>
+            <p>Consulter les informations des adhérents.</p>
+            <a asp-controller="Adherents"
+   asp-action="Index"
+   class="dashboard-button">
+    Voir les adhérents →
+</a>
+      
+        </div>
+
+    </div>
+
+</div>

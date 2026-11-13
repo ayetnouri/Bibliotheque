@@ -1,0 +1,158 @@
+﻿@model Bibliotheque.Models.Livre
+
+@{
+    ViewData["Title"] = "Détails du livre";
+
+    string imageLivre = Model.Titre switch
+    {
+        "1984" => "1984.jpg",
+        "Animal Farm" => "Animal Farm.jpg",
+        "Les Misérables" => "Les Misérables.jpg",
+        "Introduction à la programmation" => "Introduction à la programmation.jpg",
+        _ => ""
+    };
+
+    int disponibles = Model.ExemplairesDisponibles ?? 0;
+}
+
+<div class="book-detail-page">
+
+    <a asp-controller="Livres"
+       asp-action="Index"
+       class="book-detail-back">
+        <span aria-hidden="true">←</span> Retour au catalogue
+    </a>
+
+    <div class="book-detail-layout">
+
+        <aside class="book-detail-visual">
+            <div class="book-detail-cover">
+                @if (!string.IsNullOrEmpty(imageLivre))
+                {
+                    <img src="@Url.Content("~/image/books/" + imageLivre)"
+                         alt="Couverture de @Model.Titre" />
+                }
+                else
+                {
+                    <span class="book-cover-placeholder">📖</span>
+                }
+            </div>
+
+            <div class="book-detail-stock @(disponibles > 0 ? "available" : "unavailable")">
+                <span class="book-detail-stock-dot"></span>
+                <div>
+                    <strong>@(disponibles > 0 ? "Disponible à l'emprunt" : "Actuellement indisponible")</strong>
+                    <small>
+                        @disponibles exemplaire(s) disponible(s)
+                    </small>
+                </div>
+            </div>
+        </aside>
+
+        <main class="book-detail-information">
+
+            <p class="book-detail-eyebrow">LOST IN A GOOD BOOK · COLLECTION</p>
+
+            <h1>@Model.Titre</h1>
+
+            <p class="book-detail-isbn">
+                ISBN <span>@Model.ISBN</span>
+            </p>
+
+            @if (TempData["Succes"] != null)
+            {
+                <div class="book-detail-alert success" role="status">
+                    @TempData["Succes"]
+                </div>
+            }
+
+            @if (TempData["Erreur"] != null)
+            {
+                <div class="book-detail-alert error" role="alert">
+                    @TempData["Erreur"]
+                </div>
+            }
+
+            <section class="book-detail-summary">
+                <h2>À propos de cet ouvrage</h2>
+                <p>
+                    @(!string.IsNullOrWhiteSpace(Model.Resume)
+                        ? Model.Resume
+                        : "Aucun résumé n'est disponible pour le moment.")
+                </p>
+            </section>
+
+            <section class="book-detail-facts">
+                <h2>Informations sur le livre</h2>
+
+                <div class="book-detail-fact">
+                    <span>Nombre de pages</span>
+                    <strong>@(Model.NombrePages?.ToString() ?? "Non renseigné")</strong>
+                </div>
+
+                <div class="book-detail-fact">
+                    <span>Année de publication</span>
+                    <strong>@(Model.AnneePublication?.ToString() ?? "Non renseignée")</strong>
+                </div>
+
+                <div class="book-detail-fact">
+                    <span>Exemplaires disponibles</span>
+                    <strong>@disponibles</strong>
+                </div>
+
+                <div class="book-detail-fact">
+                    <span>Nombre total d'exemplaires</span>
+                    <strong>@(Model.NombreExemplaires?.ToString() ?? "Non renseigné")</strong>
+                </div>
+
+                <div class="book-detail-fact">
+                    <span>Emplacement en bibliothèque</span>
+                    <strong>@(Model.Emplacement ?? "Non renseigné")</strong>
+                </div>
+            </section>
+
+            <div class="book-detail-actions">
+
+                @if (User.Identity?.IsAuthenticated == true &&
+                     User.IsInRole("ADHERENT"))
+                {
+                    @if (disponibles > 0)
+                    {
+                        <form asp-controller="Adherent"
+                              asp-action="Emprunter"
+                              method="post">
+                            <input type="hidden"
+                                   name="idLivre"
+                                   value="@Model.IdLivre" />
+
+                            <button type="submit" class="book-detail-primary">
+                                Emprunter ce livre <span aria-hidden="true">→</span>
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="book-detail-disabled">
+                            Aucun exemplaire disponible
+                        </span>
+                    }
+                }
+                else if (User.Identity?.IsAuthenticated != true)
+                {
+                    <a asp-controller="Account"
+                       asp-action="Login"
+                       class="book-detail-primary">
+                        Se connecter pour emprunter <span aria-hidden="true">→</span>
+                    </a>
+                }
+
+                <a asp-controller="Livres"
+                   asp-action="Index"
+                   class="book-detail-secondary">
+                    ← Retour au catalogue
+                </a>
+
+            </div>
+        </main>
+    </div>
+</div>

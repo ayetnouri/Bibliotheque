@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Espace adhérent";
+}
+
+<div class="dashboard adherent-dashboard">
+
+    <section class="dashboard-header">
+        <div class="dashboard-header-content">
+            <p class="dashboard-subtitle">VOTRE ESPACE PERSONNEL</p>
+
+            <h1>Bienvenue dans votre bibliothèque.</h1>
+
+            <p class="dashboard-intro">
+                Découvrez le catalogue, suivez vos emprunts et
+                gérez vos informations personnelles depuis votre espace.
+            </p>
+
+            <a asp-controller="Livres"
+               asp-action="Index"
+               class="dashboard-primary-button">
+                Découvrir le catalogue
+                <span aria-hidden="true">→</span>
+            </a>
+        </div>
+
+        <div class="dashboard-decoration" aria-hidden="true">
+            <span class="decoration-label">LOST IN A</span>
+            <span class="decoration-title">Good<br />Book</span>
+            <span class="decoration-line"></span>
+            <span class="decoration-caption">Chaque livre a son histoire.</span>
+        </div>
+    </section>
+
+    <section class="dashboard-section">
+        <div class="dashboard-section-heading">
+            <div>
+                <p class="dashboard-subtitle">VOTRE BIBLIOTHÈQUE</p>
+                <h2>Que souhaitez-vous faire ?</h2>
+            </div>
+
+            <p class="dashboard-section-note">
+                Retrouvez vos services en un seul endroit.
+            </p>
+        </div>
+
+        <div class="dashboard-cards">
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-top">
+                    <span class="dashboard-card-number">01</span>
+                    <span class="dashboard-card-icon" aria-hidden="true">⌕</span>
+                </div>
+
+                <p class="dashboard-card-label">CATALOGUE</p>
+                <h3>Explorer les livres</h3>
+
+                <p class="dashboard-card-description">
+                    Parcourez les livres disponibles et découvrez
+                    de nouvelles lectures.
+                </p>
+
+                <a asp-controller="Livres"
+                   asp-action="Index"
+                   class="dashboard-card-link">
+                    Consulter le catalogue <span aria-hidden="true">→</span>
+                </a>
+            </article>
+
+            <article class="dashboard-card dashboard-card-featured">
+                <div class="dashboard-card-top">
+                    <span class="dashboard-card-number">02</span>
+                    <span class="dashboard-card-icon" aria-hidden="true">▤</span>
+                </div>
+
+                <p class="dashboard-card-label">MES EMPRUNTS</p>
+                <h3>Suivre mes emprunts</h3>
+
+                <p class="dashboard-card-description">
+                    Consultez vos emprunts, leurs dates de retour
+                    et leur état.
+                </p>
+
+                <a asp-controller="Adherent"
+                   asp-action="MesEmprunts"
+                   class="dashboard-card-link">
+                    Voir mes emprunts <span aria-hidden="true">→</span>
+                </a>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-top">
+                    <span class="dashboard-card-number">03</span>
+                    <span class="dashboard-card-icon" aria-hidden="true">♙</span>
+                </div>
+
+                <p class="dashboard-card-label">MON COMPTE</p>
+                <h3>Mon profil</h3>
+
+                <p class="dashboard-card-description">
+                    Consultez et modifiez vos informations personnelles.
+                </p>
+
+                <a asp-controller="Adherent"
+                   asp-action="MonProfil"
+                   class="dashboard-card-link">
+                    Gérer mon profil <span aria-hidden="true">→</span>
+                </a>
+            </article>
+
+        </div>
+    </section>
+
+    <footer class="dashboard-footer">
+        <span>LOST IN A GOOD BOOK</span>
+        <span>Votre prochaine lecture vous attend.</span>
+    </footer>
+
+</div>
